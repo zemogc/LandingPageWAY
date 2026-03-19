@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wayfinding · Info Display Solutions</title>
+  <link href="https://fonts.googleapis.com/css2?family=Exo:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&display=swap" rel="stylesheet">
+  <link rel="icon" href="icon.jpeg" type="image/png">
+  <style>
+    :root {
+      --midnight: #04043a;
+      --blue: #0000ff;
+      --violet: #7703dd;
+      --dodger: #0098ff;
+      --white: #ffffff;
+      --gray-light: #f0f4ff;
+      --gray-mid: #8892b0;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Exo', sans-serif;
+      background-color: var(--midnight);
+      color: var(--white);
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.4;
+    }
+
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 48px;
+      background: rgba(4, 4, 58, 0.7);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(0, 152, 255, 0.2);
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+    }
+
+    .nav-logo img {
+      height: 52px;
+      width: auto;
+      max-width: 220px;
+      display: block;
+      object-fit: contain;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: rgba(255,255,255,0.7);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      transition: color 0.25s;
+    }
+
+    .nav-links a:hover {
+      color: var(--dodger);
+    }
+
+    .nav-cta {
+      background: var(--dodger);
+      color: var(--white) !important;
+      padding: 10px 24px;
+      border-radius: 4px;
+      font-weight: 700 !important;
+      letter-spacing: 1px;
+      transition: background 0.25s, box-shadow 0.25s !important;
+    }
+
+    .nav-cta:hover {
+      background: #00b0ff !important;
+      box-shadow: 0 0 20px rgba(0,152,255,0.5);
+      color: var(--white) !important;
+    }
+
+    .hero {
+      min-height: 100vh;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 120px 24px 80px;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 20% 60%, rgba(119,3,221,0.35) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 50% at 80% 30%, rgba(0,152,255,0.3) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 80% at 50% 100%, rgba(0,0,255,0.2) 0%, transparent 60%),
+        var(--midnight);
+      animation: meshShift 10s ease-in-out infinite alternate;
+    }
+
+    @keyframes meshShift {
+      0% { filter: hue-rotate(0deg) brightness(1); }
+      100% { filter: hue-rotate(15deg) brightness(1.08); }
+    }
+
+    .hero-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,152,255,0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,152,255,0.06) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+
+    .hero-orb {
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0,152,255,0.15) 0%, transparent 70%);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      animation: orbPulse 4s ease-in-out infinite;
+    }
+
+    @keyframes orbPulse {
+      0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.6; }
+      50% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 860px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(0,152,255,0.12);
+      border: 1px solid rgba(0,152,255,0.4);
+      border-radius: 100px;
+      padding: 8px 20px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--dodger);
+      margin-bottom: 32px;
+      animation: fadeInUp 0.8s ease both;
+    }
+
+    .hero-badge::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      background: var(--dodger);
+      border-radius: 50%;
+      animation: blinkDot 1.5s ease-in-out infinite;
+    }
+
+    @keyframes blinkDot {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.2; }
+    }
+
+    .hero h1 {
+      font-size: clamp(48px, 8vw, 96px);
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: -2px;
+      margin-bottom: 28px;
+      animation: fadeInUp 0.8s 0.15s ease both;
+    }
+
+    .hero h1 .line-1 {
+      display: block;
+      color: var(--white);
+    }
+
+    .hero h1 .line-2 {
+      display: block;
+      background: linear-gradient(90deg, var(--dodger) 0%, var(--violet) 50%, var(--blue) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      background-size: 200%;
+      animation: gradientFlow 3s linear infinite, fadeInUp 0.8s 0.15s ease both;
+    }
+
+    @keyframes gradientFlow {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 200% 50%; }
+    }
+
+    .hero-desc {
+      font-size: 18px;
+      font-weight: 400;
+      line-height: 1.7;
+      color: rgba(255,255,255,0.65);
+      max-width: 620px;
+      margin: 0 auto 48px;
+      animation: fadeInUp 0.8s 0.3s ease both;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+      animation: fadeInUp 0.8s 0.45s ease both;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--dodger);
+      color: var(--white);
+      padding: 16px 36px;
+      border-radius: 6px;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-decoration: none;
+      transition: transform 0.25s, box-shadow 0.25s, background 0.25s;
+      box-shadow: 0 0 30px rgba(0,152,255,0.4);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 50px rgba(0,152,255,0.6);
+      background: #00b0ff;
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(255,255,255,0.06);
+      color: var(--white);
+      padding: 16px 36px;
+      border-radius: 6px;
+      font-size: 15px;
+      font-weight: 600;
+      text-decoration: none;
+      border: 1px solid rgba(255,255,255,0.15);
+      transition: transform 0.25s, background 0.25s, border-color 0.25s;
+    }
+
+    .btn-secondary:hover {
+      transform: translateY(-2px);
+      background: rgba(255,255,255,0.1);
+      border-color: rgba(0,152,255,0.5);
+    }
+
+    .hero-scroll {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      color: rgba(255,255,255,0.3);
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      animation: fadeInUp 1s 1s ease both;
+    }
+
+    .scroll-line {
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, rgba(0,152,255,0.8), transparent);
+      animation: scrollDrop 1.5s ease-in-out infinite;
+    }
+
+    @keyframes scrollDrop {
+      0% { transform: scaleY(0); transform-origin: top; }
+      50% { transform: scaleY(1); transform-origin: top; }
+      51% { transform: scaleY(1); transform-origin: bottom; }
+      100% { transform: scaleY(0); transform-origin: bottom; }
+    }
+
+    .stats-strip {
+      background: rgba(0,152,255,0.06);
+      border-top: 1px solid rgba(0,152,255,0.15);
+      border-bottom: 1px solid rgba(0,152,255,0.15);
+      padding: 40px 48px;
+    }
+
+    .stats-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      text-align: center;
+    }
+
+    .stat-number {
+      font-size: 42px;
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--dodger), var(--violet));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.45);
+    }
+
+    .features {
+      padding: 120px 48px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--dodger);
+      margin-bottom: 20px;
+    }
+
+    .section-title {
+      font-size: clamp(32px, 5vw, 52px);
+      font-weight: 900;
+      line-height: 1.1;
+      letter-spacing: -1px;
+      margin-bottom: 20px;
+    }
+
+    .section-sub {
+      font-size: 16px;
+      color: rgba(255,255,255,0.5);
+      max-width: 500px;
+      line-height: 1.7;
+    }
+
+    .features-header {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: end;
+      margin-bottom: 72px;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+    }
+
+    .feature-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.07);
+      padding: 40px 36px;
+      transition: background 0.3s, border-color 0.3s, transform 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--dodger), var(--violet));
+      transform: scaleX(0);
+      transition: transform 0.4s ease;
+    }
+
+    .feature-card:hover {
+      background: rgba(0,152,255,0.05);
+      border-color: rgba(0,152,255,0.2);
+      transform: translateY(-4px);
+    }
+
+    .feature-card:hover::before {
+      transform: scaleX(1);
+    }
+
+    .feature-icon {
+      width: 48px;
+      height: 48px;
+      margin-bottom: 24px;
+      position: relative;
+    }
+
+    .feature-icon svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .feature-card h3 {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: var(--white);
+    }
+
+    .feature-card p {
+      font-size: 14px;
+      line-height: 1.7;
+      color: rgba(255,255,255,0.5);
+    }
+
+    .how {
+      padding: 120px 48px;
+      background: rgba(0,0,0,0.2);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .how::before {
+      content: '';
+      position: absolute;
+      right: -200px;
+      top: -200px;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(119,3,221,0.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .how-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .how-header {
+      text-align: center;
+      margin-bottom: 80px;
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      position: relative;
+    }
+
+    .steps::before {
+      content: '';
+      position: absolute;
+      top: 32px;
+      left: 10%;
+      right: 10%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(0,152,255,0.4), var(--violet), rgba(0,152,255,0.4), transparent);
+    }
+
+    .step {
+      text-align: center;
+      padding: 0 24px;
+    }
+
+    .step-num {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: var(--midnight);
+      border: 2px solid rgba(0,152,255,0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 28px;
+      font-size: 22px;
+      font-weight: 900;
+      color: var(--dodger);
+      position: relative;
+      z-index: 1;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    .step:hover .step-num {
+      border-color: var(--dodger);
+      box-shadow: 0 0 20px rgba(0,152,255,0.4);
+    }
+
+    .step h3 {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .step p {
+      font-size: 13px;
+      line-height: 1.7;
+      color: rgba(255,255,255,0.45);
+    }
+
+    .contact {
+      padding: 120px 48px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .contact-wrapper {
+      display: grid;
+      grid-template-columns: 1fr 1.6fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    .contact-info h2 {
+      font-size: clamp(32px, 4vw, 46px);
+      font-weight: 900;
+      line-height: 1.1;
+      letter-spacing: -1px;
+      margin-bottom: 20px;
+    }
+
+    .contact-info h2 span {
+      background: linear-gradient(90deg, var(--dodger), var(--violet));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .contact-info p {
+      font-size: 15px;
+      line-height: 1.7;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 40px;
+    }
+
+    .contact-chips {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .chip {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 20px;
+      background: rgba(0,152,255,0.06);
+      border: 1px solid rgba(0,152,255,0.15);
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.7);
+    }
+
+    .chip-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      background: linear-gradient(135deg, var(--dodger), var(--violet));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .contact-form-box {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      padding: 12px;
+      overflow: hidden;
+    }
+
+    .contact-form-box iframe {
+      width: 100%;
+      height: 620px;
+      border: none;
+      border-radius: 8px;
+      display: block;
+    }
+
+    footer {
+      background: rgba(0,0,0,0.3);
+      border-top: 1px solid rgba(0,152,255,0.15);
+      padding: 48px;
+    }
+
+    .footer-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .footer-logo {
+      font-size: 18px;
+      font-weight: 900;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      background: linear-gradient(90deg, var(--dodger), var(--violet));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .footer-copy {
+      font-size: 13px;
+      color: rgba(255,255,255,0.3);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+
+    .footer-links a {
+      font-size: 12px;
+      color: rgba(255,255,255,0.35);
+      text-decoration: none;
+      letter-spacing: 1px;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover {
+      color: var(--dodger);
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 900px) {
+      nav {
+        padding: 16px 24px;
+      }
+
+      .nav-logo img {
+        height: 42px;
+        max-width: 170px;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .stats-inner {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .features {
+        padding: 80px 24px;
+      }
+
+      .features-header {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .how {
+        padding: 80px 24px;
+      }
+
+      .steps {
+        grid-template-columns: 1fr 1fr;
+        gap: 48px;
+      }
+
+      .steps::before {
+        display: none;
+      }
+
+      .contact {
+        padding: 80px 24px;
+      }
+
+      .contact-wrapper {
+        grid-template-columns: 1fr;
+        gap: 48px;
+      }
+
+      footer {
+        padding: 32px 24px;
+      }
+
+      .footer-inner {
+        flex-direction: column;
+        text-align: center;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .steps {
+        grid-template-columns: 1fr;
+      }
+
+      .stats-inner {
+        grid-template-columns: 1fr;
+      }
+
+      .hero h1 {
+        font-size: 42px;
+      }
+
+      .hero-desc {
+        font-size: 16px;
+      }
+
+      .btn-primary,
+      .btn-secondary {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="nav-logo">
+      <img src="logotipo.jpeg" alt="Logo Wayfinding">
+    </div>
+
+    <ul class="nav-links">
+      <li><a href="#features">Solución</a></li>
+      <li><a href="#how">Cómo funciona</a></li>
+      <li><a href="#contact" class="nav-cta">Solicitar demo</a></li>
+    </ul>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-grid"></div>
+    <div class="hero-orb"></div>
+
+    <div class="hero-content">
+      <div class="hero-badge">Sistema de navegación inteligente</div>
+      <h1>
+        <span class="line-1">Navega con</span>
+        <span class="line-2">Precisión Total</span>
+      </h1>
+      <p class="hero-desc">
+        Transforma la experiencia de tus visitantes con señalización digital interactiva que guía, informa y deleita en cada punto de tu espacio.
+      </p>
+      <div class="hero-actions">
+        <a href="#contact" class="btn-primary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+          Solicitar demo gratis
+        </a>
+        <a href="#features" class="btn-secondary">Conocer más</a>
+      </div>
+    </div>
+
+    <div class="hero-scroll">
+      <div class="scroll-line"></div>
+      scroll
+    </div>
+  </section>
+
+  <div class="stats-strip">
+    <div class="stats-inner">
+      <div class="stat-item reveal">
+        <div class="stat-number">98%</div>
+        <div class="stat-label">Satisfacción de usuarios</div>
+      </div>
+      <div class="stat-item reveal">
+        <div class="stat-number">3×</div>
+        <div class="stat-label">Reducción en consultas al personal</div>
+      </div>
+      <div class="stat-item reveal">
+        <div class="stat-number">+20</div>
+        <div class="stat-label">Instalaciones activas</div>
+      </div>
+      <div class="stat-item reveal">
+        <div class="stat-number">7x5</div>
+        <div class="stat-label">Disponibilidad garantizada</div>
+      </div>
+    </div>
+  </div>
+
+  <section class="features" id="features">
+    <div class="features-header reveal">
+      <div>
+        <span class="section-label">Características</span>
+        <h2 class="section-title">Todo lo que necesitas en un solo sistema</h2>
+      </div>
+      <p class="section-sub">
+        Diseñado para centros comerciales, hospitales, aeropuertos y cualquier espacio donde la experiencia del visitante importa.
+      </p>
+    </div>
+
+    <div class="features-grid">
+      <div class="feature-card reveal">
+        <div class="feature-icon">
+          <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="24" cy="24" r="22" stroke="#0098ff" stroke-width="2" opacity="0.3"/>
+            <path d="M24 12C18 12 13 17 13 23C13 31 24 40 24 40C24 40 35 31 35 23C35 17 30 12 24 12Z" stroke="#0098ff" stroke-width="2" fill="rgba(0,152,255,0.1)"/>
+            <circle cx="24" cy="23" r="4" fill="#0098ff"/>
+          </svg>
+        </div>
+        <h3>Mapas interactivos</h3>
+        <p>Visualización en tiempo real de plantas, pasillos y puntos de interés con rutas optimizadas para cada destino.</p>
+      </div>
+
+      <div class="feature-card reveal">
+        <div class="feature-icon">
+          <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="8" y="8" width="32" height="32" rx="4" stroke="#7703dd" stroke-width="2" opacity="0.4"/>
+            <rect x="14" y="18" width="20" height="3" rx="1.5" fill="#7703dd" opacity="0.7"/>
+            <rect x="14" y="25" width="14" height="3" rx="1.5" fill="#7703dd" opacity="0.5"/>
+            <circle cx="34" cy="34" r="8" fill="rgba(0,152,255,0.15)" stroke="#0098ff" stroke-width="1.5"/>
+            <path d="M31 34L33 36L37 32" stroke="#0098ff" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h3>Directorios digitales</h3>
+        <p>Búsqueda instantánea de locales, consultorios o servicios con información actualizada en tiempo real.</p>
+      </div>
+
+      <div class="feature-card reveal">
+        <div class="feature-icon">
+          <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 36L12 20L24 8L36 20L36 36L12 36Z" stroke="#0098ff" stroke-width="2" fill="rgba(0,152,255,0.08)"/>
+            <path d="M20 36V28H28V36" stroke="#0098ff" stroke-width="2" stroke-linecap="round"/>
+            <path d="M8 36H40" stroke="#0098ff" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h3>Multi-piso inteligente</h3>
+        <p>Navegación fluida entre pisos y zonas con conectividad entre ascensores, escaleras y puntos de acceso.</p>
+      </div>
+
+      <div class="feature-card reveal">
+        <div class="feature-icon">
+          <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="10" y="14" width="28" height="20" rx="3" stroke="#7703dd" stroke-width="2" fill="rgba(119,3,221,0.08)"/>
+            <path d="M18 34L16 38H32L30 34" stroke="#7703dd" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="24" cy="24" r="5" stroke="#0098ff" stroke-width="1.5" fill="rgba(0,152,255,0.1)"/>
+            <path d="M24 21V24L26 26" stroke="#0098ff" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h3>Kiosko táctil</h3>
+        <p>Interfaz intuitiva optimizada para pantallas táctiles de cualquier tamaño, incluyendo modo accesibilidad.</p>
+      </div>
+
+      <div class="feature-card reveal">
+        <div class="feature-icon">
+          <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M24 6L28 18H40L30 26L34 38L24 30L14 38L18 26L8 18H20L24 6Z" stroke="#0098ff" stroke-width="2" fill="rgba(0,152,255,0.08)"/>
+          </svg>
+        </div>
+        <h3>Analytics en tiempo real</h3>
+        <p>Dashboard con estadísticas de uso, flujos de tráfico y patrones de navegación para optimizar tu espacio.</p>
+      </div>
+
+      <div class="feature-card reveal">
+        <div class="feature-icon">
+          <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="24" cy="24" r="16" stroke="#7703dd" stroke-width="2" fill="rgba(119,3,221,0.08)"/>
+            <path d="M16 24C16 24 18 18 24 18C30 18 32 24 32 24C32 24 30 30 24 30C18 30 16 24 16 24Z" stroke="#0098ff" stroke-width="1.5" fill="none"/>
+            <circle cx="24" cy="24" r="4" fill="#7703dd" opacity="0.8"/>
+          </svg>
+        </div>
+        <h3>Gestión centralizada</h3>
+        <p>Panel de administración web para actualizar información, gestionar mapas y publicar anuncios desde cualquier lugar.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="how" id="how">
+    <div class="how-inner">
+      <div class="how-header reveal">
+        <span class="section-label">Proceso</span>
+        <h2 class="section-title">Funciona en 4 pasos simples</h2>
+      </div>
+
+      <div class="steps">
+        <div class="step reveal">
+          <div class="step-num">01</div>
+          <h3>Análisis del espacio</h3>
+          <p>Levantamos el plano de tu instalación y diseñamos la arquitectura de navegación óptima.</p>
+        </div>
+        <div class="step reveal">
+          <div class="step-num">02</div>
+          <h3>Instalación del hardware</h3>
+          <p>Montamos los kioscos táctiles y configuramos la red de señalización digital.</p>
+        </div>
+        <div class="step reveal">
+          <div class="step-num">03</div>
+          <h3>Configuración del software</h3>
+          <p>Cargamos tu directorio, mapas interactivos y personalizamos la identidad visual.</p>
+        </div>
+        <div class="step reveal">
+          <div class="step-num">04</div>
+          <h3>Lanzamiento y soporte</h3>
+          <p>Capacitamos a tu equipo y activamos el monitoreo.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact" id="contact">
+    <div class="contact-wrapper">
+      <div class="contact-info reveal">
+        <span class="section-label">Contacto</span>
+        <h2>Hablemos de tu <span>proyecto</span></h2>
+        <p>Cuéntanos sobre tu espacio y te presentaremos una propuesta personalizada sin costo ni compromiso.</p>
+
+        <div class="contact-chips">
+          <div class="chip">
+            <div class="chip-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5">
+                <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 8.11 19.79 19.79 0 01.14 4.41 2 2 0 012.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.25 9.91a16 16 0 006.29 6.29l1.07-1.07a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/>
+              </svg>
+            </div>
+            Respuesta en menos de 24 horas
+          </div>
+          <div class="chip">
+            <div class="chip-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5">
+                <circle cx="12" cy="12" r="10"/>
+                <polyline points="12 6 12 12 16 14"/>
+              </svg>
+            </div>
+            Demo en vivo sin compromiso
+          </div>
+          <div class="chip">
+            <div class="chip-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              </svg>
+            </div>
+            Propuesta personalizada gratis
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-form-box reveal">
+        <iframe
+          src="https://docs.google.com/forms/d/e/1FAIpQLSejkwUxrvFIXNxZ1j2UO7iw53UnCa_BRvZUIWaDOns8jdz87Q/viewform?usp=publish-editor"
+          title="Formulario de contacto Wayfinding"
+          loading="lazy">
+        </iframe>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-logo">Wayfinding</div>
+      <p class="footer-copy">© 2026 Info Display Solutions · Todos los derechos reservados.</p>
+      <ul class="footer-links">
+        <li><a href="#">Privacidad</a></li>
+        <li><a href="#">Términos</a></li>
+        <li><a href="#contact">Contacto</a></li>
+      </ul>
+    </div>
+  </footer>
+
+  <script>
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => {
+            entry.target.classList.add('visible');
+          }, 80 * (Array.from(entry.target.parentElement.children).indexOf(entry.target)));
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    reveals.forEach(el => observer.observe(el));
+
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-links a');
+
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(section => {
+        const top = section.offsetTop - 100;
+        if (window.scrollY >= top) current = section.id;
+      });
+
+      navLinks.forEach(link => {
+        link.style.color = link.getAttribute('href') === '#' + current
+          ? '#0098ff'
+          : (link.classList.contains('nav-cta') ? '#ffffff' : 'rgba(255,255,255,0.7)');
+      });
+    });
+  </script>
+</body>
+</html>
