@@ -293,12 +293,12 @@
       border-color: rgba(0,152,255,0.5);
     }
 
-    /* ─── HERO CARRUSEL PLACEHOLDER ───────────────────── */
+    /* ─── HERO CARRUSEL ─────────────────────────────── */
     .hero-carousel-wrap {
       position: relative;
       z-index: 2;
       width: 100%;
-      max-width: 1400px;
+      max-width: 1100px;
       margin: 0 auto;
       padding: 0 12px;
       animation: fadeInUp 0.8s 0.6s ease both;
@@ -306,92 +306,113 @@
 
     .hero-carousel {
       width: 100%;
-      aspect-ratio: 1816 / 478;
+      aspect-ratio: 16 / 9;
       border-radius: 16px;
-      border: 2px dashed rgba(0,152,255,0.35);
-      background:
-        linear-gradient(135deg, rgba(0,152,255,0.05), rgba(119,3,221,0.05)),
-        rgba(255,255,255,0.02);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 14px;
+      border: 1px solid rgba(0,152,255,0.25);
+      background: rgba(0,0,0,0.4);
       position: relative;
       overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4), 0 0 40px rgba(0,152,255,0.1);
     }
 
-    .hero-carousel::before {
-      content: '';
+    .carousel-img {
       position: absolute;
       inset: 0;
-      background-image:
-        linear-gradient(rgba(0,152,255,0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0,152,255,0.04) 1px, transparent 1px);
-      background-size: 40px 40px;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      opacity: 0;
+      transition: opacity 1s ease;
       pointer-events: none;
     }
 
-    .carousel-icon {
-      width: 64px;
-      height: 64px;
-      border-radius: 12px;
-      border: 2px dashed rgba(0,152,255,0.45);
+    .carousel-img.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .carousel-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: rgba(4, 4, 58, 0.6);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(0,152,255,0.3);
       display: flex;
       align-items: center;
       justify-content: center;
-      position: relative;
-      z-index: 1;
-      background: rgba(0,152,255,0.06);
+      cursor: pointer;
+      z-index: 3;
+      opacity: 0;
+      transition: opacity 0.3s, background 0.25s, border-color 0.25s;
     }
 
-    .carousel-icon svg {
-      width: 30px;
-      height: 30px;
-      stroke: rgba(0,152,255,0.7);
+    .hero-carousel:hover .carousel-arrow {
+      opacity: 1;
+    }
+
+    .carousel-arrow:hover {
+      background: rgba(0, 152, 255, 0.4);
+      border-color: var(--dodger);
+    }
+
+    .carousel-arrow svg {
+      width: 20px;
+      height: 20px;
+      stroke: white;
       fill: none;
-      stroke-width: 1.5;
+      stroke-width: 2.5;
       stroke-linecap: round;
       stroke-linejoin: round;
     }
 
-    .carousel-label {
-      font-size: 14px;
-      font-weight: 700;
-      color: rgba(0,152,255,0.85);
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      position: relative;
-      z-index: 1;
+    .carousel-prev {
+      left: 20px;
     }
 
-    .carousel-dim {
-      font-size: 12px;
-      color: rgba(255,255,255,0.35);
-      position: relative;
-      z-index: 1;
-      font-weight: 400;
-      letter-spacing: 1px;
+    .carousel-next {
+      right: 20px;
     }
 
     .carousel-dots {
+      position: absolute;
+      bottom: 18px;
+      left: 50%;
+      transform: translateX(-50%);
       display: flex;
       gap: 6px;
-      position: relative;
-      z-index: 1;
-      margin-top: 6px;
+      z-index: 3;
+      padding: 8px 14px;
+      background: rgba(4, 4, 58, 0.5);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-radius: 100px;
+      border: 1px solid rgba(0,152,255,0.2);
     }
 
     .carousel-dot {
       width: 28px;
       height: 5px;
       border-radius: 3px;
-      background: rgba(0,152,255,0.2);
+      background: rgba(255,255,255,0.25);
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      transition: background 0.3s, box-shadow 0.3s, width 0.3s;
+    }
+
+    .carousel-dot:hover {
+      background: rgba(255,255,255,0.5);
     }
 
     .carousel-dot.active {
       background: var(--dodger);
-      box-shadow: 0 0 10px rgba(0,152,255,0.6);
+      box-shadow: 0 0 10px rgba(0,152,255,0.7);
+      width: 36px;
     }
 
     .stats-strip {
@@ -590,39 +611,45 @@
       margin: 0 auto;
     }
 
-    /* Video placeholder */
+    /* Video del sistema */
     .video-wrap {
       max-width: 1100px;
       margin: 0 auto 72px;
       position: relative;
     }
 
-    .video-placeholder {
+    .video-container {
       width: 100%;
-      aspect-ratio: 16 / 9;
       border-radius: 20px;
-      border: 2px dashed rgba(0,152,255,0.35);
-      background:
-        linear-gradient(135deg, rgba(0,152,255,0.08), rgba(119,3,221,0.08)),
-        rgba(255,255,255,0.02);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 20px;
-      position: relative;
       overflow: hidden;
+      position: relative;
+      background: #000;
+      border: 1px solid rgba(0,152,255,0.25);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 60px rgba(0,152,255,0.15);
     }
 
-    .video-placeholder::before {
+    .video-container::before {
       content: '';
       position: absolute;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(0,152,255,0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0,152,255,0.04) 1px, transparent 1px);
-      background-size: 40px 40px;
+      inset: -1px;
+      border-radius: 20px;
+      padding: 1px;
+      background: linear-gradient(135deg, rgba(0,152,255,0.5), rgba(119,3,221,0.5), transparent);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
       pointer-events: none;
+      z-index: 1;
+    }
+
+    .system-video {
+      display: block;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      background: #000;
     }
 
     .video-play-btn {
@@ -649,24 +676,6 @@
       height: 32px;
       fill: white;
       margin-left: 4px;
-    }
-
-    .video-label {
-      font-size: 14px;
-      font-weight: 700;
-      color: rgba(0,152,255,0.9);
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      position: relative;
-      z-index: 1;
-    }
-
-    .video-dim {
-      font-size: 12px;
-      color: rgba(255,255,255,0.4);
-      position: relative;
-      z-index: 1;
-      letter-spacing: 1px;
     }
 
     /* Solution features */
@@ -1337,7 +1346,7 @@
       }
 
       .hero-carousel {
-        aspect-ratio: 16 / 10;
+        aspect-ratio: 16 / 9;
       }
 
       .uptime-badge {
@@ -1449,23 +1458,24 @@
       </div>
     </div>
 
-    <!-- CARRUSEL PLACEHOLDER -->
+    <!-- CARRUSEL -->
     <div class="hero-carousel-wrap">
-      <div class="hero-carousel">
-        <div class="carousel-icon">
-          <svg viewBox="0 0 24 24">
-            <rect x="3" y="3" width="18" height="18" rx="2"/>
-            <circle cx="8.5" cy="8.5" r="1.5"/>
-            <polyline points="21 15 16 10 5 21"/>
-          </svg>
-        </div>
-        <div class="carousel-label">Carrusel de imágenes</div>
-        <div class="carousel-dim">1816 × 478 px · Pendiente material de la diseñadora</div>
+      <div class="hero-carousel" id="heroCarousel">
+        <img src="Carrusel Wayfinding 1.png" class="carousel-img active" alt="Directorio Médico Digital imagen 1">
+        <img src="Carrusel Wayfinding 2.png" class="carousel-img" alt="Directorio Médico Digital imagen 2">
+        <img src="Carrusel Wayfinding 3.png" class="carousel-img" alt="Directorio Médico Digital imagen 3">
+
+        <button class="carousel-arrow carousel-prev" aria-label="Anterior">
+          <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <button class="carousel-arrow carousel-next" aria-label="Siguiente">
+          <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+
         <div class="carousel-dots">
-          <div class="carousel-dot active"></div>
-          <div class="carousel-dot"></div>
-          <div class="carousel-dot"></div>
-          <div class="carousel-dot"></div>
+          <button class="carousel-dot active" data-slide="0" aria-label="Imagen 1"></button>
+          <button class="carousel-dot" data-slide="1" aria-label="Imagen 2"></button>
+          <button class="carousel-dot" data-slide="2" aria-label="Imagen 3"></button>
         </div>
       </div>
     </div>
@@ -1537,14 +1547,18 @@
         <p class="section-sub">No es solo una pantalla con nombres. Es una plataforma de orientación, gestión y generación de ingresos, desplegada en su infraestructura existente.</p>
       </div>
 
-      <!-- VIDEO PLACEHOLDER -->
+      <!-- VIDEO DEL SISTEMA -->
       <div class="video-wrap reveal">
-        <div class="video-placeholder">
-          <div class="video-play-btn">
-            <svg viewBox="0 0 24 24"><polygon points="6 4 20 12 6 20 6 4"/></svg>
-          </div>
-          <div class="video-label">Video del sistema</div>
-          <div class="video-dim">Pendiente · Por integrar</div>
+        <div class="video-container">
+          <video
+            class="system-video"
+            controls
+            preload="metadata"
+            poster=""
+            playsinline>
+            <source src="Wayfinding.mp4" type="video/mp4">
+            Tu navegador no soporta video HTML5.
+          </video>
         </div>
       </div>
 
@@ -1642,7 +1656,7 @@
           <h3>Su directorio funciona. Siempre. Aunque su equipo de IT esté ocupado.</h3>
           <p>Monitoreamos cada pantalla de su instalación en tiempo real desde nuestro centro de operaciones. Si algo falla antes de que usted lo note, ya estamos trabajando en la solución.</p>
           <div class="uptime-pills">
-            <span class="uptime-pill">Monitoreo remoto</span>
+            <span class="uptime-pill">Monitoreo remoto 24/7</span>
             <span class="uptime-pill">Respuesta en menos de 4 horas</span>
             <span class="uptime-pill">Sin necesidad de IT interno</span>
           </div>
@@ -1805,6 +1819,69 @@
   </footer>
 
   <script>
+    /* ─── CARRUSEL ───────────────────────────────── */
+    (function() {
+      const carousel = document.getElementById('heroCarousel');
+      if (!carousel) return;
+
+      const slides = carousel.querySelectorAll('.carousel-img');
+      const dots = carousel.querySelectorAll('.carousel-dot');
+      const prevBtn = carousel.querySelector('.carousel-prev');
+      const nextBtn = carousel.querySelector('.carousel-next');
+      let current = 0;
+      let autoplayTimer;
+      const AUTOPLAY_MS = 5000;
+
+      function goTo(index) {
+        slides[current].classList.remove('active');
+        dots[current].classList.remove('active');
+        current = (index + slides.length) % slides.length;
+        slides[current].classList.add('active');
+        dots[current].classList.add('active');
+      }
+
+      function next() { goTo(current + 1); }
+      function prev() { goTo(current - 1); }
+
+      function startAutoplay() {
+        stopAutoplay();
+        autoplayTimer = setInterval(next, AUTOPLAY_MS);
+      }
+
+      function stopAutoplay() {
+        if (autoplayTimer) clearInterval(autoplayTimer);
+      }
+
+      nextBtn.addEventListener('click', () => { next(); startAutoplay(); });
+      prevBtn.addEventListener('click', () => { prev(); startAutoplay(); });
+
+      dots.forEach((dot, i) => {
+        dot.addEventListener('click', () => { goTo(i); startAutoplay(); });
+      });
+
+      carousel.addEventListener('mouseenter', stopAutoplay);
+      carousel.addEventListener('mouseleave', startAutoplay);
+
+      // Soporte para swipe en móvil
+      let touchStartX = 0;
+      carousel.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+        stopAutoplay();
+      }, { passive: true });
+
+      carousel.addEventListener('touchend', (e) => {
+        const touchEndX = e.changedTouches[0].screenX;
+        const diff = touchStartX - touchEndX;
+        if (Math.abs(diff) > 50) {
+          if (diff > 0) next(); else prev();
+        }
+        startAutoplay();
+      }, { passive: true });
+
+      startAutoplay();
+    })();
+
+    /* ─── REVEAL ON SCROLL ───────────────────────── */
     const reveals = document.querySelectorAll('.reveal');
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
