@@ -8,13 +8,27 @@
   <link rel="icon" href="icon.jpeg" type="image/png">
   <style>
     :root {
-      --midnight: #04043a;
-      --blue: #0000ff;
-      --violet: #7703dd;
-      --dodger: #0098ff;
+      /* Paleta del cliente: cyan + lightgray + white */
+      --primary: #00ccff;
+      --primary-soft: #66d9ff;
+      --primary-dark: #0099cc;
+      --lightgray: #e0e0e0;
       --white: #ffffff;
-      --gray-light: #f0f4ff;
-      --gray-mid: #8892b0;
+      --bg: #ffffff;
+      --bg-alt: #f7fafc;
+      --bg-tint: #f0f9ff;
+      --text-primary: #1a1a1a;
+      --text-secondary: #555555;
+      --text-muted: #888888;
+      --border: #e0e0e0;
+      --border-soft: #f0f0f0;
+      /* Alias retro-compatibilidad */
+      --midnight: #ffffff;
+      --dodger: #00ccff;
+      --violet: #00ccff;
+      --blue: #00ccff;
+      --gray-light: #f7fafc;
+      --gray-mid: #888888;
     }
 
     *, *::before, *::after {
@@ -29,8 +43,8 @@
 
     body {
       font-family: 'Exo', sans-serif;
-      background-color: var(--midnight);
-      color: var(--white);
+      background-color: var(--bg);
+      color: var(--text-primary);
       overflow-x: hidden;
     }
 
@@ -54,10 +68,11 @@
       align-items: center;
       justify-content: space-between;
       padding: 18px 48px;
-      background: rgba(4, 4, 58, 0.7);
+      background: rgba(255, 255, 255, 0.92);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
-      border-bottom: 1px solid rgba(0, 152, 255, 0.2);
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 2px 20px rgba(0,0,0,0.04);
     }
 
     .nav-logo {
@@ -82,17 +97,40 @@
     }
 
     .nav-links a {
-      color: rgba(255,255,255,0.7);
+      color: var(--text-secondary);
       text-decoration: none;
       font-size: 13px;
       font-weight: 600;
       letter-spacing: 1.5px;
       text-transform: uppercase;
       transition: color 0.25s;
+      position: relative;
     }
 
-    .nav-links a:hover {
-      color: var(--dodger);
+    .nav-links a:not(.nav-cta)::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -6px;
+      height: 2px;
+      background: var(--primary);
+      border-radius: 2px;
+      transform: scaleX(0);
+      transform-origin: center;
+      transition: transform 0.25s ease;
+    }
+
+    .nav-links a:not(.nav-cta):hover {
+      color: var(--primary);
+    }
+
+    .nav-links a:not(.nav-cta).is-active {
+      color: var(--primary);
+    }
+
+    .nav-links a:not(.nav-cta).is-active::after {
+      transform: scaleX(1);
     }
 
     .nav-cta {
@@ -106,8 +144,8 @@
     }
 
     .nav-cta:hover {
-      background: #00b0ff !important;
-      box-shadow: 0 0 20px rgba(0,152,255,0.5);
+      background: #33d6ff !important;
+      box-shadow: 0 0 20px rgba(0,204,255,0.5);
       color: var(--white) !important;
     }
 
@@ -127,10 +165,10 @@
       position: absolute;
       inset: 0;
       background:
-        radial-gradient(ellipse 80% 60% at 20% 60%, rgba(119,3,221,0.35) 0%, transparent 60%),
-        radial-gradient(ellipse 60% 50% at 80% 30%, rgba(0,152,255,0.3) 0%, transparent 60%),
-        radial-gradient(ellipse 50% 80% at 50% 100%, rgba(0,0,255,0.2) 0%, transparent 60%),
-        var(--midnight);
+        radial-gradient(ellipse 80% 60% at 20% 60%, rgba(0,204,255,0.18) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 50% at 80% 30%, rgba(102,217,255,0.14) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 80% at 50% 100%, rgba(224,224,224,0.5) 0%, transparent 60%),
+        #ffffff;
       animation: meshShift 10s ease-in-out infinite alternate;
     }
 
@@ -143,8 +181,8 @@
       position: absolute;
       inset: 0;
       background-image:
-        linear-gradient(rgba(0,152,255,0.06) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0,152,255,0.06) 1px, transparent 1px);
+        linear-gradient(rgba(0,204,255,0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,204,255,0.08) 1px, transparent 1px);
       background-size: 60px 60px;
     }
 
@@ -153,7 +191,7 @@
       width: 600px;
       height: 600px;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(0,152,255,0.15) 0%, transparent 70%);
+      background: radial-gradient(circle, rgba(0,204,255,0.18) 0%, transparent 70%);
       top: 40%;
       left: 50%;
       transform: translate(-50%, -50%);
@@ -176,15 +214,15 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      background: rgba(0,152,255,0.12);
-      border: 1px solid rgba(0,152,255,0.4);
+      background: rgba(0,204,255,0.08);
+      border: 1px solid rgba(0,204,255,0.3);
       border-radius: 100px;
       padding: 8px 20px;
       font-size: 12px;
       font-weight: 700;
       letter-spacing: 2px;
       text-transform: uppercase;
-      color: var(--dodger);
+      color: var(--primary-dark);
       margin-bottom: 32px;
       animation: fadeInUp 0.8s ease both;
     }
@@ -214,12 +252,12 @@
 
     .hero h1 .line-1 {
       display: block;
-      color: var(--white);
+      color: var(--text-primary);
     }
 
     .hero h1 .line-2 {
       display: block;
-      background: linear-gradient(90deg, var(--dodger) 0%, var(--violet) 50%, var(--blue) 100%);
+      background: linear-gradient(90deg, #00ccff 0%, #0099cc 50%, #00ccff 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -236,7 +274,7 @@
       font-size: 18px;
       font-weight: 400;
       line-height: 1.7;
-      color: rgba(255,255,255,0.65);
+      color: var(--text-secondary);
       max-width: 720px;
       margin: 0 auto 48px;
       animation: fadeInUp 0.8s 0.3s ease both;
@@ -263,34 +301,34 @@
       letter-spacing: 0.5px;
       text-decoration: none;
       transition: transform 0.25s, box-shadow 0.25s, background 0.25s;
-      box-shadow: 0 0 30px rgba(0,152,255,0.4);
+      box-shadow: 0 0 30px rgba(0,204,255,0.4);
     }
 
     .btn-primary:hover {
       transform: translateY(-2px);
-      box-shadow: 0 0 50px rgba(0,152,255,0.6);
-      background: #00b0ff;
+      box-shadow: 0 0 50px rgba(0,204,255,0.6);
+      background: #33d6ff;
     }
 
     .btn-secondary {
       display: inline-flex;
       align-items: center;
       gap: 10px;
-      background: rgba(255,255,255,0.06);
-      color: var(--white);
+      background: var(--bg-alt);
+      color: var(--text-primary);
       padding: 16px 36px;
       border-radius: 6px;
       font-size: 15px;
       font-weight: 600;
       text-decoration: none;
-      border: 1px solid rgba(255,255,255,0.15);
+      border: 1px solid var(--border);
       transition: transform 0.25s, background 0.25s, border-color 0.25s;
     }
 
     .btn-secondary:hover {
       transform: translateY(-2px);
-      background: rgba(255,255,255,0.1);
-      border-color: rgba(0,152,255,0.5);
+      background: var(--bg-alt);
+      border-color: rgba(0,204,255,0.5);
     }
 
     /* ─── HERO CARRUSEL ─────────────────────────────── */
@@ -298,21 +336,23 @@
       position: relative;
       z-index: 2;
       width: 100%;
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 0 12px;
+      max-width: 100%;
+      margin: 0;
+      padding: 0;
       animation: fadeInUp 0.8s 0.6s ease both;
     }
 
     .hero-carousel {
       width: 100%;
       aspect-ratio: 16 / 9;
-      border-radius: 16px;
-      border: 1px solid rgba(0,152,255,0.25);
-      background: rgba(0,0,0,0.4);
+      border-radius: 0;
+      border: none;
+      border-top: 1px solid rgba(0,204,255,0.25);
+      border-bottom: 1px solid rgba(0,204,255,0.25);
+      background: var(--bg-alt);
       position: relative;
       overflow: hidden;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.4), 0 0 40px rgba(0,152,255,0.1);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
     }
 
     .carousel-img {
@@ -338,10 +378,10 @@
       width: 44px;
       height: 44px;
       border-radius: 50%;
-      background: rgba(4, 4, 58, 0.6);
+      background: rgba(255, 255, 255, 0.85);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
-      border: 1px solid rgba(0,152,255,0.3);
+      border: 1px solid rgba(0,204,255,0.3);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -356,14 +396,18 @@
     }
 
     .carousel-arrow:hover {
-      background: rgba(0, 152, 255, 0.4);
-      border-color: var(--dodger);
+      background: var(--primary);
+      border-color: var(--primary);
+    }
+
+    .carousel-arrow:hover svg {
+      stroke: #ffffff;
     }
 
     .carousel-arrow svg {
       width: 20px;
       height: 20px;
-      stroke: white;
+      stroke: var(--text-primary);
       fill: none;
       stroke-width: 2.5;
       stroke-linecap: round;
@@ -387,18 +431,18 @@
       gap: 6px;
       z-index: 3;
       padding: 8px 14px;
-      background: rgba(4, 4, 58, 0.5);
+      background: rgba(255, 255, 255, 0.85);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
       border-radius: 100px;
-      border: 1px solid rgba(0,152,255,0.2);
+      border: 1px solid rgba(0,204,255,0.2);
     }
 
     .carousel-dot {
       width: 28px;
       height: 5px;
       border-radius: 3px;
-      background: rgba(255,255,255,0.25);
+      background: rgba(0,0,0,0.15);
       border: none;
       padding: 0;
       cursor: pointer;
@@ -406,48 +450,68 @@
     }
 
     .carousel-dot:hover {
-      background: rgba(255,255,255,0.5);
+      background: rgba(0,0,0,0.3);
     }
 
     .carousel-dot.active {
       background: var(--dodger);
-      box-shadow: 0 0 10px rgba(0,152,255,0.7);
+      box-shadow: 0 0 10px rgba(0,204,255,0.7);
       width: 36px;
     }
 
     .stats-strip {
-      background: rgba(0,152,255,0.06);
-      border-top: 1px solid rgba(0,152,255,0.15);
-      border-bottom: 1px solid rgba(0,152,255,0.15);
-      padding: 40px 48px;
+      background: linear-gradient(180deg, rgba(0,204,255,0.04) 0%, rgba(255,255,255,1) 100%);
+      border-top: 1px solid rgba(0,204,255,0.18);
+      border-bottom: 1px solid var(--border);
+      padding: 56px 48px;
+      position: relative;
+    }
+
+    .stats-strip::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #00ccff, transparent);
     }
 
     .stats-inner {
-      max-width: 1100px;
+      max-width: 1200px;
       margin: 0 auto;
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 24px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 36px;
       text-align: center;
     }
 
+    .stats-inner .stat-item {
+      padding: 0 12px;
+    }
+
     .stat-number {
-      font-size: 42px;
+      font-size: clamp(44px, 5vw, 64px);
       font-weight: 900;
-      background: linear-gradient(135deg, var(--dodger), var(--violet));
+      background: linear-gradient(135deg, #66d9ff, #00ccff);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
       line-height: 1;
-      margin-bottom: 8px;
+      margin-bottom: 16px;
+      letter-spacing: -1px;
     }
 
     .stat-label {
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.45);
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.3px;
+      line-height: 1.65;
+      color: var(--text-secondary);
+      max-width: 280px;
+      margin: 0 auto;
+      text-transform: none;
     }
 
     .section-label {
@@ -456,7 +520,7 @@
       font-weight: 700;
       letter-spacing: 3px;
       text-transform: uppercase;
-      color: var(--dodger);
+      color: var(--primary-dark);
       margin-bottom: 20px;
     }
 
@@ -470,7 +534,7 @@
 
     .section-title em {
       font-style: normal;
-      background: linear-gradient(90deg, var(--dodger), var(--violet));
+      background: linear-gradient(90deg, #00ccff, #0099cc);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -478,7 +542,7 @@
 
     .section-sub {
       font-size: 16px;
-      color: rgba(255,255,255,0.5);
+      color: var(--text-muted);
       max-width: 700px;
       line-height: 1.7;
     }
@@ -507,13 +571,14 @@
     }
 
     .problem-card {
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.07);
+      background: #ffffff;
+      border: 1px solid var(--border);
       border-radius: 12px;
       padding: 36px 32px;
       position: relative;
       overflow: hidden;
       transition: background 0.3s, border-color 0.3s, transform 0.3s;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.04);
     }
 
     .problem-card::before {
@@ -530,9 +595,10 @@
     }
 
     .problem-card:hover {
-      background: rgba(119,3,221,0.05);
-      border-color: rgba(119,3,221,0.3);
+      background: #f0fbff;
+      border-color: var(--primary);
       transform: translateY(-4px);
+      box-shadow: 0 10px 40px rgba(0,204,255,0.15);
     }
 
     .problem-card:hover::before {
@@ -543,8 +609,8 @@
       width: 52px;
       height: 52px;
       border-radius: 10px;
-      background: linear-gradient(135deg, rgba(0,152,255,0.15), rgba(119,3,221,0.15));
-      border: 1px solid rgba(0,152,255,0.25);
+      background: linear-gradient(135deg, rgba(0,204,255,0.2), rgba(224,224,224,0.08));
+      border: 1px solid rgba(0,204,255,0.25);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -566,19 +632,19 @@
       font-weight: 700;
       margin-bottom: 14px;
       line-height: 1.3;
-      color: var(--white);
+      color: var(--text-primary);
     }
 
     .problem-card p {
       font-size: 14px;
       line-height: 1.7;
-      color: rgba(255,255,255,0.55);
+      color: var(--text-secondary);
     }
 
     /* ─── SOLUCION ────────────────────────────────────── */
     .solution {
       padding: 120px 48px;
-      background: rgba(0,0,0,0.2);
+      background: var(--bg-alt);
       position: relative;
       overflow: hidden;
     }
@@ -591,7 +657,7 @@
       width: 600px;
       height: 600px;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(0,152,255,0.12) 0%, transparent 70%);
+      background: radial-gradient(circle, rgba(0,204,255,0.18) 0%, transparent 70%);
       pointer-events: none;
     }
 
@@ -624,8 +690,8 @@
       overflow: hidden;
       position: relative;
       background: #000;
-      border: 1px solid rgba(0,152,255,0.25);
-      box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 60px rgba(0,152,255,0.15);
+      border: 1px solid rgba(0,204,255,0.3);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.15), 0 0 40px rgba(0,204,255,0.2);
     }
 
     .video-container::before {
@@ -634,7 +700,7 @@
       inset: -1px;
       border-radius: 20px;
       padding: 1px;
-      background: linear-gradient(135deg, rgba(0,152,255,0.5), rgba(119,3,221,0.5), transparent);
+      background: linear-gradient(135deg, rgba(0,204,255,0.5), rgba(0,204,255,0.5), transparent);
       -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
       mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
       -webkit-mask-composite: xor;
@@ -656,19 +722,19 @@
       width: 90px;
       height: 90px;
       border-radius: 50%;
-      background: linear-gradient(135deg, var(--dodger), var(--violet));
+      background: linear-gradient(135deg, #00ccff, #0077aa);
       display: flex;
       align-items: center;
       justify-content: center;
       position: relative;
       z-index: 1;
-      box-shadow: 0 0 40px rgba(0,152,255,0.4);
+      box-shadow: 0 0 40px rgba(0,204,255,0.4);
       animation: pulseGlow 2.5s ease-in-out infinite;
     }
 
     @keyframes pulseGlow {
-      0%, 100% { box-shadow: 0 0 30px rgba(0,152,255,0.4); }
-      50% { box-shadow: 0 0 60px rgba(0,152,255,0.7); }
+      0%, 100% { box-shadow: 0 0 30px rgba(0,204,255,0.4); }
+      50% { box-shadow: 0 0 60px rgba(0,204,255,0.7); }
     }
 
     .video-play-btn svg {
@@ -686,20 +752,22 @@
     }
 
     .feature-item {
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.08);
+      background: #ffffff;
+      border: 1px solid var(--border);
       border-radius: 12px;
       padding: 32px 28px;
       display: flex;
       gap: 20px;
       align-items: flex-start;
       transition: background 0.3s, border-color 0.3s, transform 0.3s;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.04);
     }
 
     .feature-item:hover {
-      background: rgba(0,152,255,0.05);
-      border-color: rgba(0,152,255,0.25);
+      background: #f0fbff;
+      border-color: var(--primary);
       transform: translateY(-3px);
+      box-shadow: 0 8px 30px rgba(0,204,255,0.12);
     }
 
     .feature-num {
@@ -707,14 +775,14 @@
       width: 48px;
       height: 48px;
       border-radius: 10px;
-      background: linear-gradient(135deg, var(--dodger), var(--violet));
+      background: linear-gradient(135deg, #00ccff, #0077aa);
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 16px;
       font-weight: 900;
       color: var(--white);
-      box-shadow: 0 4px 16px rgba(0,152,255,0.3);
+      box-shadow: 0 4px 16px rgba(0,204,255,0.3);
     }
 
     .feature-content {
@@ -726,13 +794,13 @@
       font-weight: 700;
       margin-bottom: 10px;
       line-height: 1.35;
-      color: var(--white);
+      color: var(--text-primary);
     }
 
     .feature-content p {
       font-size: 14px;
       line-height: 1.7;
-      color: rgba(255,255,255,0.55);
+      color: var(--text-secondary);
       margin-bottom: 12px;
     }
 
@@ -742,8 +810,8 @@
       font-weight: 600;
       letter-spacing: 1px;
       color: var(--dodger);
-      background: rgba(0,152,255,0.1);
-      border: 1px solid rgba(0,152,255,0.25);
+      background: rgba(0,204,255,0.1);
+      border: 1px solid rgba(0,204,255,0.25);
       padding: 4px 10px;
       border-radius: 100px;
       text-transform: uppercase;
@@ -772,13 +840,14 @@
     }
 
     .roi-card {
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.07);
+      background: #ffffff;
+      border: 1px solid var(--border);
       border-radius: 12px;
       padding: 36px 32px;
       position: relative;
       overflow: hidden;
       transition: background 0.3s, border-color 0.3s, transform 0.3s;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.04);
     }
 
     .roi-card::before {
@@ -788,16 +857,17 @@
       left: 0;
       right: 0;
       height: 2px;
-      background: linear-gradient(90deg, var(--dodger), var(--violet));
+      background: linear-gradient(90deg, #00ccff, #0099cc);
       transform: scaleX(0);
       transition: transform 0.4s ease;
       transform-origin: right;
     }
 
     .roi-card:hover {
-      background: rgba(0,152,255,0.05);
-      border-color: rgba(0,152,255,0.25);
+      background: #f0fbff;
+      border-color: var(--primary);
       transform: translateY(-4px);
+      box-shadow: 0 10px 40px rgba(0,204,255,0.15);
     }
 
     .roi-card:hover::before {
@@ -808,8 +878,8 @@
       width: 52px;
       height: 52px;
       border-radius: 10px;
-      background: linear-gradient(135deg, rgba(0,152,255,0.15), rgba(119,3,221,0.15));
-      border: 1px solid rgba(0,152,255,0.25);
+      background: linear-gradient(135deg, rgba(0,204,255,0.2), rgba(224,224,224,0.08));
+      border: 1px solid rgba(0,204,255,0.25);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -831,19 +901,161 @@
       font-weight: 700;
       margin-bottom: 14px;
       line-height: 1.3;
-      color: var(--white);
+      color: var(--text-primary);
     }
 
     .roi-card p {
       font-size: 14px;
       line-height: 1.7;
-      color: rgba(255,255,255,0.55);
+      color: var(--text-secondary);
+    }
+
+    /* ─── SHOWCASE (Foto + Texto resaltado) ───────────── */
+    .showcase {
+      padding: 120px 48px;
+      background: var(--bg-alt);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .showcase::before {
+      content: '';
+      position: absolute;
+      left: -100px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 500px;
+      height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0,204,255,0.18) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .showcase-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 72px;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .showcase-media {
+      position: relative;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.5), 0 0 60px rgba(0,204,255,0.18);
+      border: 1px solid rgba(0,204,255,0.25);
+    }
+
+    .showcase-media img {
+      width: 100%;
+      height: auto;
+      display: block;
+      transition: transform 0.6s ease;
+    }
+
+    .showcase-media:hover img {
+      transform: scale(1.03);
+    }
+
+    .showcase-badge {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(0,204,255,0.4);
+      border-radius: 100px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      color: #00ccff;
+    }
+
+    .showcase-badge svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    .showcase-text .section-title {
+      font-size: clamp(28px, 3.8vw, 44px);
+      margin-bottom: 24px;
+    }
+
+    .showcase-desc {
+      font-size: 16px;
+      line-height: 1.75;
+      color: var(--text-secondary);
+      margin-bottom: 36px;
+    }
+
+    .showcase-desc mark {
+      background: rgba(0, 204, 255, 0.16);
+      color: var(--text-primary);
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-weight: 600;
+      box-decoration-break: clone;
+      -webkit-box-decoration-break: clone;
+    }
+
+    .showcase-highlights {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .showcase-highlights li {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .showcase-icon {
+      flex-shrink: 0;
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, rgba(0,204,255,0.18), rgba(224,224,224,0.06));
+      border: 1px solid rgba(0,204,255,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #00ccff;
+    }
+
+    .showcase-icon svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .showcase-highlights h4 {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+
+    .showcase-highlights p {
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--text-secondary);
     }
 
     /* ─── SOPORTE ──────────────────────────────────────── */
     .support {
       padding: 120px 48px;
-      background: rgba(0,0,0,0.2);
+      background: var(--bg-alt);
       position: relative;
       overflow: hidden;
     }
@@ -856,7 +1068,7 @@
       width: 600px;
       height: 600px;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(119,3,221,0.15) 0%, transparent 70%);
+      background: radial-gradient(circle, rgba(0,204,255,0.2) 0%, transparent 70%);
       pointer-events: none;
     }
 
@@ -881,8 +1093,8 @@
       align-items: center;
       gap: 36px;
       padding: 36px 40px;
-      background: linear-gradient(135deg, rgba(0,152,255,0.08), rgba(119,3,221,0.06));
-      border: 1px solid rgba(0,152,255,0.25);
+      background: linear-gradient(135deg, rgba(0,204,255,0.08), rgba(224,224,224,0.4));
+      border: 1px solid rgba(0,204,255,0.25);
       border-radius: 16px;
       margin-bottom: 48px;
       flex-wrap: wrap;
@@ -901,7 +1113,7 @@
     .uptime-num {
       font-size: 48px;
       font-weight: 900;
-      background: linear-gradient(135deg, var(--dodger), var(--violet));
+      background: linear-gradient(135deg, #00ccff, #0077aa);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -913,7 +1125,7 @@
       font-weight: 700;
       letter-spacing: 1.5px;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.5);
+      color: var(--text-muted);
       white-space: nowrap;
     }
 
@@ -926,12 +1138,12 @@
       font-size: 20px;
       font-weight: 700;
       margin-bottom: 8px;
-      color: var(--white);
+      color: var(--text-primary);
     }
 
     .uptime-text p {
       font-size: 14px;
-      color: rgba(255,255,255,0.55);
+      color: var(--text-secondary);
       line-height: 1.7;
       margin-bottom: 14px;
     }
@@ -947,9 +1159,9 @@
       font-size: 11px;
       font-weight: 600;
       letter-spacing: 0.5px;
-      color: rgba(255,255,255,0.7);
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(0,152,255,0.2);
+      color: var(--text-secondary);
+      background: var(--bg-alt);
+      border: 1px solid rgba(0,204,255,0.2);
       padding: 5px 12px;
       border-radius: 100px;
     }
@@ -962,25 +1174,27 @@
     }
 
     .support-card {
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.07);
+      background: #ffffff;
+      border: 1px solid var(--border);
       border-radius: 12px;
       padding: 28px 26px;
       transition: background 0.3s, border-color 0.3s, transform 0.3s;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.03);
     }
 
     .support-card:hover {
-      background: rgba(119,3,221,0.05);
-      border-color: rgba(119,3,221,0.25);
+      background: #f0fbff;
+      border-color: var(--primary);
       transform: translateY(-3px);
+      box-shadow: 0 6px 24px rgba(0,204,255,0.12);
     }
 
     .support-icon {
       width: 42px;
       height: 42px;
       border-radius: 8px;
-      background: linear-gradient(135deg, rgba(0,152,255,0.15), rgba(119,3,221,0.15));
-      border: 1px solid rgba(0,152,255,0.2);
+      background: linear-gradient(135deg, rgba(0,204,255,0.2), rgba(224,224,224,0.08));
+      border: 1px solid rgba(0,204,255,0.2);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -1002,13 +1216,13 @@
       font-weight: 700;
       margin-bottom: 10px;
       line-height: 1.35;
-      color: var(--white);
+      color: var(--text-primary);
     }
 
     .support-card p {
       font-size: 13px;
       line-height: 1.7;
-      color: rgba(255,255,255,0.5);
+      color: var(--text-muted);
       margin-bottom: 14px;
     }
 
@@ -1018,8 +1232,8 @@
       font-weight: 600;
       letter-spacing: 1px;
       color: var(--dodger);
-      background: rgba(0,152,255,0.08);
-      border: 1px solid rgba(0,152,255,0.2);
+      background: rgba(0,204,255,0.08);
+      border: 1px solid rgba(0,204,255,0.2);
       padding: 4px 10px;
       border-radius: 100px;
       text-transform: uppercase;
@@ -1031,8 +1245,8 @@
       align-items: center;
       gap: 28px;
       padding: 32px 36px;
-      background: linear-gradient(135deg, rgba(119,3,221,0.08), rgba(0,152,255,0.06));
-      border: 1px solid rgba(119,3,221,0.25);
+      background: linear-gradient(135deg, rgba(0,204,255,0.12), rgba(224,224,224,0.04));
+      border: 1px solid rgba(0,204,255,0.25);
       border-radius: 16px;
       flex-wrap: wrap;
     }
@@ -1042,11 +1256,11 @@
       width: 56px;
       height: 56px;
       border-radius: 12px;
-      background: linear-gradient(135deg, var(--violet), var(--dodger));
+      background: linear-gradient(135deg, #00ccff, #0077aa);
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 4px 20px rgba(119,3,221,0.3);
+      box-shadow: 0 4px 20px rgba(0,204,255,0.3);
     }
 
     .privacy-icon svg {
@@ -1068,12 +1282,12 @@
       font-size: 17px;
       font-weight: 700;
       margin-bottom: 8px;
-      color: var(--white);
+      color: var(--text-primary);
     }
 
     .privacy-content p {
       font-size: 13px;
-      color: rgba(255,255,255,0.55);
+      color: var(--text-secondary);
       line-height: 1.7;
     }
 
@@ -1090,9 +1304,9 @@
       gap: 6px;
       font-size: 11px;
       font-weight: 600;
-      color: rgba(255,255,255,0.75);
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(0,152,255,0.2);
+      color: var(--text-secondary);
+      background: var(--bg-alt);
+      border: 1px solid rgba(0,204,255,0.2);
       padding: 5px 12px;
       border-radius: 100px;
     }
@@ -1130,7 +1344,7 @@
     }
 
     .contact-info h2 span {
-      background: linear-gradient(90deg, var(--dodger), var(--violet));
+      background: linear-gradient(90deg, #00ccff, #0099cc);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -1139,7 +1353,7 @@
     .contact-info p {
       font-size: 15px;
       line-height: 1.7;
-      color: rgba(255,255,255,0.5);
+      color: var(--text-muted);
       margin-bottom: 40px;
     }
 
@@ -1154,19 +1368,19 @@
       align-items: center;
       gap: 14px;
       padding: 14px 20px;
-      background: rgba(0,152,255,0.06);
-      border: 1px solid rgba(0,152,255,0.15);
+      background: rgba(0,204,255,0.06);
+      border: 1px solid rgba(0,204,255,0.15);
       border-radius: 8px;
       font-size: 13px;
       font-weight: 600;
-      color: rgba(255,255,255,0.7);
+      color: var(--text-secondary);
     }
 
     .chip-icon {
       width: 32px;
       height: 32px;
       border-radius: 6px;
-      background: linear-gradient(135deg, var(--dodger), var(--violet));
+      background: linear-gradient(135deg, #00ccff, #0077aa);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -1174,11 +1388,12 @@
     }
 
     .contact-form-box {
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.08);
+      background: #ffffff;
+      border: 1px solid var(--border);
       border-radius: 16px;
       padding: 12px;
       overflow: hidden;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.06);
     }
 
     .contact-form-box iframe {
@@ -1191,67 +1406,169 @@
 
     /* ─── FOOTER ───────────────────────────────────────── */
     footer {
-      background: rgba(0,0,0,0.3);
-      border-top: 1px solid rgba(0,152,255,0.15);
-      padding: 48px;
+      background: var(--bg-alt);
+      border-top: 1px solid rgba(0,204,255,0.15);
+      padding: 72px 48px 32px;
+      position: relative;
     }
 
-    .footer-inner {
-      max-width: 1100px;
+    footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #00ccff, transparent);
+    }
+
+    .footer-main {
+      max-width: 1200px;
       margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1.3fr;
+      gap: 56px;
+      padding-bottom: 48px;
+    }
+
+    .footer-col {
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 24px;
-      flex-wrap: wrap;
+      flex-direction: column;
+    }
+
+    .footer-brand {
+      max-width: 360px;
     }
 
     .footer-logo {
-      font-size: 18px;
+      font-size: 20px;
       font-weight: 900;
-      letter-spacing: 3px;
+      letter-spacing: 2px;
       text-transform: uppercase;
-      background: linear-gradient(90deg, var(--dodger), var(--violet));
+      background: linear-gradient(90deg, #00ccff, #0099cc);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
+      margin-bottom: 18px;
     }
 
-    .footer-copy {
+    .footer-tagline {
       font-size: 13px;
-      color: rgba(255,255,255,0.3);
+      line-height: 1.7;
+      color: var(--text-muted);
+      margin-bottom: 24px;
     }
 
-    .footer-links {
+    .footer-socials {
       display: flex;
-      gap: 28px;
-      list-style: none;
+      gap: 12px;
     }
 
-    .footer-links a {
+    .social-link {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: #ffffff;
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-secondary);
+      transition: background 0.25s, color 0.25s, transform 0.25s, border-color 0.25s, box-shadow 0.25s;
+    }
+
+    .social-link svg {
+      width: 17px;
+      height: 17px;
+    }
+
+    .social-link:hover {
+      background: var(--primary);
+      color: #ffffff;
+      border-color: var(--primary);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0,204,255,0.3);
+    }
+
+    .footer-heading {
       font-size: 12px;
-      color: rgba(255,255,255,0.35);
+      font-weight: 700;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--text-primary);
+      margin-bottom: 22px;
+    }
+
+    .footer-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .footer-list a {
+      font-size: 13px;
+      color: var(--text-muted);
       text-decoration: none;
-      letter-spacing: 1px;
+      transition: color 0.2s, padding-left 0.2s;
+      display: inline-block;
+    }
+
+    .footer-list a:hover {
+      color: #00ccff;
+      padding-left: 4px;
+    }
+
+    .footer-contact li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    .footer-contact a {
+      color: inherit;
+      text-decoration: none;
       transition: color 0.2s;
     }
 
-    .footer-links a:hover {
-      color: var(--dodger);
+    .footer-contact a:hover {
+      color: var(--primary);
+    }
+
+    .footer-contact svg {
+      width: 14px;
+      height: 14px;
+      stroke: #00ccff;
+      flex-shrink: 0;
+    }
+
+    .footer-bottom {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding-top: 28px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .footer-copy {
+      font-size: 12px;
+      color: var(--text-muted);
+      letter-spacing: 0.3px;
     }
 
     .footer-credit {
-      width: 100%;
-      max-width: 1100px;
-      margin: 28px auto 0;
-      padding-top: 24px;
-      border-top: 1px solid rgba(255,255,255,0.05);
       display: flex;
-      justify-content: center;
       align-items: center;
       gap: 8px;
       font-size: 11px;
-      color: rgba(255,255,255,0.35);
+      color: var(--text-muted);
       letter-spacing: 1px;
       text-transform: uppercase;
     }
@@ -1262,7 +1579,7 @@
       gap: 6px;
       font-weight: 700;
       text-decoration: none;
-      background: linear-gradient(90deg, var(--dodger), var(--violet));
+      background: linear-gradient(90deg, #00ccff, #0099cc);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -1276,7 +1593,7 @@
     .footer-credit a svg {
       width: 12px;
       height: 12px;
-      stroke: var(--dodger);
+      stroke: #00ccff;
       fill: none;
       stroke-width: 2;
       stroke-linecap: round;
@@ -1326,7 +1643,12 @@
       }
 
       .stats-inner {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+      .stats-strip {
+        padding: 40px 24px;
       }
 
       .problem,
@@ -1335,8 +1657,14 @@
       }
 
       .solution,
-      .support {
+      .support,
+      .showcase {
         padding: 80px 24px;
+      }
+
+      .showcase-inner {
+        grid-template-columns: 1fr;
+        gap: 40px;
       }
 
       .problem-grid,
@@ -1353,7 +1681,7 @@
         padding-right: 0;
         padding-bottom: 20px;
         border-right: none;
-        border-bottom: 1px solid rgba(255,255,255,0.1);
+        border-bottom: 1px solid var(--border);
         width: 100%;
       }
 
@@ -1367,10 +1695,20 @@
       }
 
       footer {
-        padding: 32px 24px;
+        padding: 56px 24px 24px;
       }
 
-      .footer-inner {
+      .footer-main {
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
+      }
+
+      .footer-brand {
+        grid-column: 1 / -1;
+        max-width: 100%;
+      }
+
+      .footer-bottom {
         flex-direction: column;
         text-align: center;
       }
@@ -1428,7 +1766,7 @@
       <li><a href="#solucion">Solución</a></li>
       <li><a href="#roi">Modelo de negocio</a></li>
       <li><a href="#soporte">Soporte</a></li>
-      <li><a href="#contact" class="nav-cta">Solicitar demo</a></li>
+      <li><a href="#contact">Contacto</a></li>
     </ul>
   </nav>
 
@@ -1445,7 +1783,7 @@
         <span class="line-2">Rentabiliza cada paso.</span>
       </h1>
       <p class="hero-desc">
-        El Directorio Médico Digital que transforma la experiencia de su paciente y la rentabilidad de su institución. Mapas 3D interactivos accesibles desde cualquier pantalla o smartphone — sin descargar apps y con capacidad de monetización publicitaria integrada.
+        El Directorio Médico Digital que transforma la experiencia de su paciente y la rentabilidad de su institución. Mapas 3D interactivos disponibles en cualquier dispositivo — sin descargar apps y con capacidad de monetización publicitaria integrada.
       </p>
       <div class="hero-actions">
         <a href="#contact" class="btn-primary">
@@ -1454,7 +1792,6 @@
           </svg>
           Solicitar demo gratis
         </a>
-        <a href="#solucion" class="btn-secondary">Ver la solución</a>
       </div>
     </div>
 
@@ -1485,20 +1822,16 @@
   <div class="stats-strip">
     <div class="stats-inner">
       <div class="stat-item reveal">
-        <div class="stat-number">98%</div>
-        <div class="stat-label">Satisfacción de usuarios</div>
+        <div class="stat-number">7 min</div>
+        <div class="stat-label">Tiempo promedio que pierde un paciente buscando su destino en un edificio médico sin directorio inteligente</div>
       </div>
       <div class="stat-item reveal">
-        <div class="stat-number">3×</div>
-        <div class="stat-label">Reducción en consultas al personal</div>
+        <div class="stat-number">$0</div>
+        <div class="stat-label">Ingresos generados por señalética estática, que ocupa el mismo espacio que un directorio médico digital rentable</div>
       </div>
       <div class="stat-item reveal">
-        <div class="stat-number">+20</div>
-        <div class="stat-label">Instalaciones activas</div>
-      </div>
-      <div class="stat-item reveal">
-        <div class="stat-number">7×5</div>
-        <div class="stat-label">Disponibilidad garantizada</div>
+        <div class="stat-number">3 días</div>
+        <div class="stat-label">Tiempo promedio para actualizar un directorio físico tradicional vs. segundos con una solución digital centralizada</div>
       </div>
     </div>
   </div>
@@ -1517,7 +1850,7 @@
           <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
         </div>
         <h3>Recepción saturada y pacientes frustrados</h3>
-        <p>Su personal dedica una parte importante del tiempo de atención a dar direcciones verbales. Eso es tiempo cobrable que se va por el desagüe, y paciencia del paciente que no vuelve.</p>
+        <p>Su equipo invierte una parte importante de la jornada dando direcciones verbales. Son horas productivas que se evaporan, y paciencia del paciente que no vuelve.</p>
       </div>
 
       <div class="problem-card reveal">
@@ -1533,7 +1866,7 @@
           <svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
         </div>
         <h3>Espacios de alto tráfico sin retorno comercial</h3>
-        <p>Miles de personas circulan diariamente por sus instalaciones. Sin un directorio médico digital inteligente, esa audiencia cautiva no genera ningún ingreso publicitario para la institución.</p>
+        <p>Miles de personas circulan diariamente por sus instalaciones. Sin una plataforma inteligente de visualización, esa audiencia cautiva no genera ningún retorno publicitario para la institución.</p>
       </div>
     </div>
   </section>
@@ -1567,8 +1900,7 @@
           <div class="feature-num">01</div>
           <div class="feature-content">
             <h3>Navegación QR instantánea — el mapa 3D en el bolsillo del paciente</h3>
-            <p>El paciente escanea el directorio con su cámara y en segundos lleva la ruta personalizada a su consultorio directamente en su smartphone. Sin descargar ninguna aplicación. Sin fricciones.</p>
-            <span class="feature-tag">Zero-friction · Mobile-first</span>
+            <p>Al escanear el código QR con la cámara, el visitante recibe en segundos una ruta personalizada hasta el consultorio en su propio dispositivo móvil. Sin descargar ninguna aplicación. Sin fricciones.</p>
           </div>
         </div>
 
@@ -1577,7 +1909,6 @@
           <div class="feature-content">
             <h3>Modelado 3D a medida — un gemelo digital de su edificio</h3>
             <p>Construimos un modelo tridimensional exacto de su infraestructura: pasillos, ascensores, escaleras, plantas y consultorios. La navegación refleja la realidad de su espacio con precisión milimétrica.</p>
-            <span class="feature-tag">3D preciso · Infraestructura real</span>
           </div>
         </div>
 
@@ -1586,7 +1917,6 @@
           <div class="feature-content">
             <h3>Actualización centralizada — cambios en segundos, no en días</h3>
             <p>¿Un médico cambió de consultorio? ¿Nueva especialidad en el piso 4? Desde el panel administrativo actualice cualquier información en tiempo real. Todos los directorios y apps de pacientes se sincronizan al instante.</p>
-            <span class="feature-tag">Panel web · Sincronización instantánea</span>
           </div>
         </div>
 
@@ -1595,7 +1925,6 @@
           <div class="feature-content">
             <h3>Multi-pantalla integrado</h3>
             <p>Desde pantallas verticales en recepción hasta totems táctiles en los accesos y la versión móvil escaneada desde cualquier punto. Un solo contenido, múltiples puntos de contacto con el paciente.</p>
-            <span class="feature-tag">Omnicanal · Pantallas + Mobile</span>
           </div>
         </div>
       </div>
@@ -1616,7 +1945,7 @@
           <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
         </div>
         <h3>Espacios publicitarios premium digitales</h3>
-        <p>Venda espacios segmentados en las pantallas del directorio a laboratorios farmacéuticos, farmacias internas, clínicas de estética, ópticas y locales comerciales dentro de su edificio.</p>
+        <p>Venda espacios segmentados en sus pantallas a laboratorios farmacéuticos, farmacias internas, clínicas de estética, ópticas y locales comerciales dentro de su edificio.</p>
       </div>
 
       <div class="roi-card reveal">
@@ -1624,7 +1953,7 @@
           <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
         </div>
         <h3>Ahorro inmediato en costos operativos</h3>
-        <p>Elimine los gastos recurrentes de impresión, instalación y actualización de señalética física. La plataforma se amortiza en los primeros meses de operación en la mayoría de instituciones.</p>
+        <p>Olvídese de los gastos recurrentes de impresión, montaje y actualización de señalización física. La inversión se amortiza en los primeros meses de operación en la mayoría de instituciones.</p>
       </div>
 
       <div class="roi-card reveal">
@@ -1633,6 +1962,57 @@
         </div>
         <h3>Análisis de tráfico e inteligencia operativa</h3>
         <p>Conozca en tiempo real qué áreas reciben más visitas, qué especialidades son las más buscadas y en qué horarios se concentra el tráfico peatonal. Datos que transforman la toma de decisiones.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SHOWCASE VISUAL (Foto + Textos resaltados) -->
+  <section class="showcase">
+    <div class="showcase-inner">
+      <div class="showcase-media reveal">
+        <img src="Carrusel Wayfinding 2.png" alt="Directorio Médico Digital implementado en edificio médico" loading="lazy">
+        <div class="showcase-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <span>Implementación real</span>
+        </div>
+      </div>
+
+      <div class="showcase-text reveal">
+        <span class="section-label">Diseñado para su edificio</span>
+        <h2 class="section-title">No es una pantalla genérica. Es <em>su edificio</em>, digitalizado al milímetro.</h2>
+        <p class="showcase-desc">
+          Cada Directorio se modela <mark>en función de su infraestructura real</mark>: pasillos, ascensores, escaleras, especialidades y consultorios. El resultado es una <mark>experiencia de orientación intuitiva</mark> que refleja exactamente lo que el paciente verá al desplazarse por su edificio.
+        </p>
+
+        <ul class="showcase-highlights">
+          <li>
+            <span class="showcase-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+            </span>
+            <div>
+              <h4>Mapeo 3D milimétrico</h4>
+              <p>Gemelo digital exacto de su infraestructura física, con cada espacio claramente identificado.</p>
+            </div>
+          </li>
+          <li>
+            <span class="showcase-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+            </span>
+            <div>
+              <h4>Acceso desde cualquier dispositivo</h4>
+              <p>El paciente escanea el QR y lleva el mapa interactivo en su smartphone, sin descargar aplicaciones.</p>
+            </div>
+          </li>
+          <li>
+            <span class="showcase-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+            </span>
+            <div>
+              <h4>Actualizaciones en tiempo real</h4>
+              <p>Cambie médicos, horarios o consultorios en segundos desde un panel centralizado.</p>
+            </div>
+          </li>
+        </ul>
       </div>
     </div>
   </section>
@@ -1656,7 +2036,6 @@
           <h3>Su directorio funciona. Siempre. Aunque su equipo de IT esté ocupado.</h3>
           <p>Monitoreamos cada pantalla de su instalación en tiempo real desde nuestro centro de operaciones. Si algo falla antes de que usted lo note, ya estamos trabajando en la solución.</p>
           <div class="uptime-pills">
-            <span class="uptime-pill">Monitoreo remoto 24/7</span>
             <span class="uptime-pill">Respuesta en menos de 4 horas</span>
             <span class="uptime-pill">Sin necesidad de IT interno</span>
           </div>
@@ -1671,7 +2050,6 @@
           </div>
           <h3>Implementación sin disrupción operativa</h3>
           <p>La instalación se planifica en horarios de baja actividad o fuera de horas de atención. El proceso promedio toma entre 1 y 3 días hábiles sin afectar el flujo de pacientes ni las operaciones del edificio.</p>
-          <span class="support-tag">1–3 días de instalación</span>
         </div>
 
         <div class="support-card reveal">
@@ -1680,7 +2058,6 @@
           </div>
           <h3>Soporte dedicado con canal directo</h3>
           <p>Cada cliente tiene acceso a un canal de soporte exclusivo por WhatsApp Business con un especialista asignado. No call centers, no tickets sin respuesta. Una persona que conoce su instalación.</p>
-          <span class="support-tag">Canal directo · Sin call center</span>
         </div>
 
         <div class="support-card reveal">
@@ -1689,7 +2066,6 @@
           </div>
           <h3>Actualizaciones del sistema incluidas</h3>
           <p>No existe costo adicional por nuevas versiones del software, mejoras de interfaz o funcionalidades que se vayan agregando. Su solución evoluciona sin generar facturas sorpresa.</p>
-          <span class="support-tag">Sin costo extra</span>
         </div>
 
         <div class="support-card reveal">
@@ -1698,7 +2074,6 @@
           </div>
           <h3>Compatible con su infraestructura existente</h3>
           <p>El sistema opera sobre su red local o en nube según su preferencia. Se adapta a directorios de médicos en Excel, sistemas de gestión hospitalaria o bases de datos propias mediante integración asistida por nuestro equipo.</p>
-          <span class="support-tag">Integración asistida</span>
         </div>
 
         <div class="support-card reveal">
@@ -1707,7 +2082,6 @@
           </div>
           <h3>Funcionamiento offline ante cortes de red</h3>
           <p>El directorio mantiene operativa la navegación y la información de consultorios incluso sin conexión a internet. La última versión sincronizada se mantiene disponible hasta que el servicio se restablezca.</p>
-          <span class="support-tag">Modo offline incluido</span>
         </div>
 
         <div class="support-card reveal">
@@ -1716,7 +2090,6 @@
           </div>
           <h3>Capacitación para su equipo administrativo</h3>
           <p>Incluimos sesiones de capacitación para el personal encargado de gestionar el panel de administración. El sistema está diseñado para que cualquier persona pueda actualizar información sin conocimientos técnicos.</p>
-          <span class="support-tag">Capacitación incluida</span>
         </div>
       </div>
 
@@ -1728,24 +2101,6 @@
         <div class="privacy-content">
           <h4>Privacidad del paciente garantizada por diseño</h4>
           <p>El directorio médico digital de Info Display Solutions no recolecta, almacena ni procesa datos personales de pacientes. El sistema de navegación funciona de forma anónima: no hay registro de identidad, historial clínico ni información sensible en ningún punto del flujo.</p>
-          <div class="privacy-badges">
-            <span class="privacy-badge">
-              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-              Sin datos de pacientes
-            </span>
-            <span class="privacy-badge">
-              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-              Navegación anónima
-            </span>
-            <span class="privacy-badge">
-              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-              Sin historial clínico
-            </span>
-            <span class="privacy-badge">
-              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-              Solo datos estadísticos
-            </span>
-          </div>
         </div>
       </div>
     </div>
@@ -1758,34 +2113,6 @@
         <span class="section-label">Contacto</span>
         <h2>Hablemos de su <span>proyecto</span></h2>
         <p>Sabemos que cada hospital y cada edificio de consultorios tiene necesidades únicas. No instalamos solo tecnología; integramos una solución de orientación y rentabilidad. Al contactarnos, recibirá un Análisis de Implementación Personalizado donde definiremos los puntos estratégicos de visualización y el potencial de ingresos publicitarios de su espacio.</p>
-
-        <div class="contact-chips">
-          <div class="chip">
-            <div class="chip-icon">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5">
-                <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 8.11 19.79 19.79 0 01.14 4.41 2 2 0 012.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.25 9.91a16 16 0 006.29 6.29l1.07-1.07a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/>
-              </svg>
-            </div>
-            Respuesta en menos de 24 horas
-          </div>
-          <div class="chip">
-            <div class="chip-icon">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5">
-                <circle cx="12" cy="12" r="10"/>
-                <polyline points="12 6 12 12 16 14"/>
-              </svg>
-            </div>
-            Demo en vivo sin compromiso
-          </div>
-          <div class="chip">
-            <div class="chip-icon">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5">
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-              </svg>
-            </div>
-            Propuesta personalizada gratis
-          </div>
-        </div>
       </div>
 
       <div class="contact-form-box reveal">
@@ -1800,21 +2127,71 @@
 
   <!-- FOOTER -->
   <footer>
-    <div class="footer-inner">
-      <div class="footer-logo">Info Display Solutions</div>
-      <p class="footer-copy">© 2026 Info Display Solutions · Todos los derechos reservados.</p>
-      <ul class="footer-links">
-        <li><a href="#">Privacidad</a></li>
-        <li><a href="#">Términos</a></li>
-        <li><a href="#contact">Contacto</a></li>
-      </ul>
+    <div class="footer-main">
+      <div class="footer-col footer-brand">
+        <div class="footer-logo">Info Display Solutions</div>
+        <p class="footer-tagline">Directorios Médicos Digitales que orientan, rentabilizan y transforman cada espacio en una experiencia inteligente.</p>
+        <div class="footer-socials">
+          <a href="https://www.linkedin.com/company/info-display-solutions/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" class="social-link">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+          </a>
+          <a href="https://www.instagram.com/info.display" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="social-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          </a>
+          <a href="https://www.facebook.com/share/1HtdaE6RXj/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer" aria-label="Facebook" class="social-link">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h4 class="footer-heading">Navegación</h4>
+        <ul class="footer-list">
+          <li><a href="#problema">El problema</a></li>
+          <li><a href="#solucion">La solución</a></li>
+          <li><a href="#roi">Modelo de negocio</a></li>
+          <li><a href="#soporte">Soporte</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4 class="footer-heading">Empresa</h4>
+        <ul class="footer-list">
+          <li><a href="#">Sobre nosotros</a></li>
+          <li><a href="#">Política de privacidad</a></li>
+          <li><a href="#">Términos de servicio</a></li>
+          <li><a href="#contact">Solicitar demo</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4 class="footer-heading">Contacto</h4>
+        <ul class="footer-list footer-contact">
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 8.11 19.79 19.79 0 01.14 4.41 2 2 0 012.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.25 9.91a16 16 0 006.29 6.29l1.07-1.07a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+            <a href="tel:+50230220430"><span>+502 3022 0430</span></a>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <span>Guatemala</span>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <span>Lun – Vie · 8:00 – 18:00</span>
+          </li>
+        </ul>
+      </div>
     </div>
-    <div class="footer-credit">
-      <span>Diseño y desarrollo web por</span>
-      <a href="https://www.instagram.com/zemzystem/" target="_blank" rel="noopener noreferrer">
-        ZemZysteM
-        <svg viewBox="0 0 24 24"><path d="M7 17L17 7"/><polyline points="7 7 17 7 17 17"/></svg>
-      </a>
+
+    <div class="footer-bottom">
+      <p class="footer-copy">© 2026 Info Display Solutions · Todos los derechos reservados.</p>
+      <div class="footer-credit">
+        <span>Diseño y desarrollo web por</span>
+        <a href="https://www.instagram.com/zemzystem/" target="_blank" rel="noopener noreferrer">
+          ZemZysteM
+          <svg viewBox="0 0 24 24"><path d="M7 17L17 7"/><polyline points="7 7 17 7 17 17"/></svg>
+        </a>
+      </div>
     </div>
   </footer>
 
@@ -1907,9 +2284,9 @@
       });
 
       navLinks.forEach(link => {
-        link.style.color = link.getAttribute('href') === '#' + current
-          ? '#0098ff'
-          : (link.classList.contains('nav-cta') ? '#ffffff' : 'rgba(255,255,255,0.7)');
+        if (link.classList.contains('nav-cta')) return; // El CTA no marca active
+        const isActive = link.getAttribute('href') === '#' + current;
+        link.classList.toggle('is-active', isActive);
       });
     });
   </script>
