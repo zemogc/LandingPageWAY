@@ -344,119 +344,152 @@
 
     .hero-carousel {
       width: 100%;
-      aspect-ratio: 16 / 9;
+      height: clamp(400px, 56vw, 760px);
       border-radius: 0;
       border: none;
-      border-top: 1px solid rgba(0,204,255,0.25);
-      border-bottom: 1px solid rgba(0,204,255,0.25);
+      border-top: 1px solid rgba(0,204,255,0.15);
+      border-bottom: 1px solid rgba(0,204,255,0.15);
       background: var(--bg-alt);
       position: relative;
       overflow: hidden;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
     }
 
-    .carousel-img {
+    .slide {
       position: absolute;
       inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
       opacity: 0;
       transition: opacity 1s ease;
       pointer-events: none;
     }
 
-    .carousel-img.active {
+    .slide.active {
       opacity: 1;
       pointer-events: auto;
     }
 
+    /* Fondo blureado: misma imagen, blureada y oscurecida (cinematic) */
+    .slide-bg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      filter: blur(40px) brightness(0.92) saturate(1.15);
+      transform: scale(1.2);
+    }
+
+    /* Imagen principal: contenida (sin recortes) */
+    .slide-img {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: center;
+      display: block;
+    }
+
+    /* Flechas estilo Samsung: círculos grandes siempre visibles */
     .carousel-arrow {
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
-      width: 44px;
-      height: 44px;
+      width: 56px;
+      height: 56px;
       border-radius: 50%;
-      background: rgba(255, 255, 255, 0.85);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border: 1px solid rgba(0,204,255,0.3);
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: none;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
       z-index: 3;
-      opacity: 0;
-      transition: opacity 0.3s, background 0.25s, border-color 0.25s;
-    }
-
-    .hero-carousel:hover .carousel-arrow {
       opacity: 1;
+      transition: background 0.25s, transform 0.2s, box-shadow 0.25s;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
     }
 
     .carousel-arrow:hover {
-      background: var(--primary);
-      border-color: var(--primary);
+      background: rgba(255, 255, 255, 0.95);
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.15);
+      transform: translateY(-50%) scale(1.05);
     }
 
     .carousel-arrow:hover svg {
-      stroke: #ffffff;
+      stroke: var(--primary);
     }
 
     .carousel-arrow svg {
-      width: 20px;
-      height: 20px;
+      width: 22px;
+      height: 22px;
       stroke: var(--text-primary);
       fill: none;
-      stroke-width: 2.5;
+      stroke-width: 2;
       stroke-linecap: round;
       stroke-linejoin: round;
+      transition: stroke 0.25s;
     }
 
     .carousel-prev {
-      left: 20px;
+      left: 24px;
     }
 
     .carousel-next {
-      right: 20px;
+      right: 24px;
     }
 
+    /* Indicador de progreso estilo Samsung: barra horizontal segmentada */
     .carousel-dots {
       position: absolute;
-      bottom: 18px;
+      bottom: 32px;
       left: 50%;
       transform: translateX(-50%);
       display: flex;
-      gap: 6px;
+      gap: 8px;
       z-index: 3;
-      padding: 8px 14px;
-      background: rgba(255, 255, 255, 0.85);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border-radius: 100px;
-      border: 1px solid rgba(0,204,255,0.2);
+      width: min(50%, 480px);
+      padding: 0;
+      background: transparent;
+      border: none;
     }
 
     .carousel-dot {
-      width: 28px;
-      height: 5px;
-      border-radius: 3px;
-      background: rgba(0,0,0,0.15);
+      flex: 1;
+      height: 3px;
+      border-radius: 2px;
+      background: rgba(10, 20, 40, 0.18);
       border: none;
       padding: 0;
       cursor: pointer;
-      transition: background 0.3s, box-shadow 0.3s, width 0.3s;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.3s;
     }
 
     .carousel-dot:hover {
-      background: rgba(0,0,0,0.3);
+      background: rgba(10, 20, 40, 0.32);
     }
 
     .carousel-dot.active {
-      background: var(--dodger);
-      box-shadow: 0 0 10px rgba(0,204,255,0.7);
-      width: 36px;
+      background: rgba(10, 20, 40, 0.18);
+    }
+
+    .carousel-dot.active::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--primary);
+      border-radius: 2px;
+      transform-origin: left;
+      animation: progressFill 5s linear forwards;
+    }
+
+    @keyframes progressFill {
+      from { transform: scaleX(0); }
+      to { transform: scaleX(1); }
     }
 
     .stats-strip {
@@ -677,74 +710,126 @@
       margin: 0 auto;
     }
 
-    /* Video del sistema */
-    .video-wrap {
+    /* ─── 4 PASOS VERTICALES ─────────────────────── */
+    .steps-list {
       max-width: 1100px;
-      margin: 0 auto 72px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
       position: relative;
     }
 
-    .video-container {
-      width: 100%;
-      border-radius: 20px;
-      overflow: hidden;
+    .step-row {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 56px;
+      align-items: center;
+      padding: 48px 0;
       position: relative;
-      background: #000;
-      border: 1px solid rgba(0,204,255,0.3);
-      box-shadow: 0 20px 60px rgba(0,0,0,0.15), 0 0 40px rgba(0,204,255,0.2);
+      border-bottom: 1px solid var(--border-soft);
     }
 
-    .video-container::before {
-      content: '';
-      position: absolute;
-      inset: -1px;
-      border-radius: 20px;
-      padding: 1px;
-      background: linear-gradient(135deg, rgba(0,204,255,0.5), rgba(0,204,255,0.5), transparent);
-      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-      -webkit-mask-composite: xor;
-      mask-composite: exclude;
-      pointer-events: none;
-      z-index: 1;
+    .step-row:last-child {
+      border-bottom: none;
     }
 
-    .system-video {
-      display: block;
-      width: 100%;
-      height: auto;
-      aspect-ratio: 16 / 9;
-      object-fit: cover;
-      background: #000;
+    /* Alternar: pasos pares invierten orden (imagen a la izquierda) */
+    .step-row:nth-child(even) {
+      grid-template-columns: 1fr 1.4fr;
     }
 
-    .video-play-btn {
-      width: 90px;
-      height: 90px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #00ccff, #0077aa);
+    .step-row:nth-child(even) .step-text {
+      order: 2;
+    }
+
+    .step-row:nth-child(even) .step-visual {
+      order: 1;
+    }
+
+    .step-text {
+      max-width: 540px;
+    }
+
+    .step-number-wrap {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .step-number {
+      font-size: clamp(36px, 4vw, 52px);
+      font-weight: 900;
+      letter-spacing: -2px;
+      line-height: 1;
+      background: linear-gradient(135deg, #00ccff, #0099cc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .step-line {
+      flex: 1;
+      max-width: 80px;
+      height: 2px;
+      background: linear-gradient(90deg, var(--primary), transparent);
+      border-radius: 2px;
+    }
+
+    .step-text h3 {
+      font-size: clamp(22px, 2.4vw, 28px);
+      font-weight: 800;
+      line-height: 1.2;
+      letter-spacing: -0.5px;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+
+    .step-subtitle {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--primary);
+      margin-bottom: 16px;
+      letter-spacing: 0.2px;
+    }
+
+    .step-desc {
+      font-size: 15px;
+      line-height: 1.75;
+      color: var(--text-secondary);
+    }
+
+    .step-visual {
       display: flex;
       align-items: center;
       justify-content: center;
       position: relative;
+    }
+
+    .step-visual::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at center, rgba(0,204,255,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .step-visual svg {
+      width: 100%;
+      max-width: 320px;
+      height: auto;
+      position: relative;
       z-index: 1;
-      box-shadow: 0 0 40px rgba(0,204,255,0.4);
-      animation: pulseGlow 2.5s ease-in-out infinite;
+      filter: drop-shadow(0 12px 24px rgba(0,153,204,0.15));
+      transition: transform 0.4s ease;
     }
 
-    @keyframes pulseGlow {
-      0%, 100% { box-shadow: 0 0 30px rgba(0,204,255,0.4); }
-      50% { box-shadow: 0 0 60px rgba(0,204,255,0.7); }
+    .step-row:hover .step-visual svg {
+      transform: translateY(-4px);
     }
 
-    .video-play-btn svg {
-      width: 32px;
-      height: 32px;
-      fill: white;
-      margin-left: 4px;
-    }
-
-    /* Solution features */
+    /* Solution features (legacy, no se renderiza pero queda por compatibilidad) */
     .solution-features {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -935,8 +1020,8 @@
       max-width: 1200px;
       margin: 0 auto;
       display: grid;
-      grid-template-columns: 1.1fr 1fr;
-      gap: 72px;
+      grid-template-columns: 1fr 1.15fr;
+      gap: 64px;
       align-items: center;
       position: relative;
       z-index: 1;
@@ -946,8 +1031,9 @@
       position: relative;
       border-radius: 20px;
       overflow: hidden;
-      box-shadow: 0 30px 80px rgba(0,0,0,0.5), 0 0 60px rgba(0,204,255,0.18);
-      border: 1px solid rgba(0,204,255,0.25);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.08), 0 0 60px rgba(0,204,255,0.12);
+      border: 1px solid var(--border);
+      background: var(--bg-card);
     }
 
     .showcase-media img {
@@ -1626,6 +1712,39 @@
       .solution-features {
         grid-template-columns: 1fr;
       }
+
+      .step-row,
+      .step-row:nth-child(even) {
+        grid-template-columns: 1fr;
+        gap: 32px;
+        padding: 40px 0;
+        text-align: center;
+      }
+
+      .step-row:nth-child(even) .step-text {
+        order: 2;
+      }
+
+      .step-row:nth-child(even) .step-visual {
+        order: 1;
+      }
+
+      .step-row .step-visual {
+        order: 1;
+      }
+
+      .step-row .step-text {
+        order: 2;
+        max-width: 100%;
+      }
+
+      .step-number-wrap {
+        justify-content: center;
+      }
+
+      .step-visual svg {
+        max-width: 240px;
+      }
     }
 
     @media (max-width: 900px) {
@@ -1675,6 +1794,30 @@
 
       .hero-carousel {
         aspect-ratio: 16 / 9;
+        max-height: none;
+      }
+
+      .carousel-arrow {
+        width: 40px;
+        height: 40px;
+      }
+
+      .carousel-arrow svg {
+        width: 18px;
+        height: 18px;
+      }
+
+      .carousel-prev {
+        left: 12px;
+      }
+
+      .carousel-next {
+        right: 12px;
+      }
+
+      .carousel-dots {
+        bottom: 18px;
+        width: 70%;
       }
 
       .uptime-badge {
@@ -1798,9 +1941,18 @@
     <!-- CARRUSEL -->
     <div class="hero-carousel-wrap">
       <div class="hero-carousel" id="heroCarousel">
-        <img src="Carrusel Wayfinding 1.png" class="carousel-img active" alt="Directorio Médico Digital imagen 1">
-        <img src="Carrusel Wayfinding 2.png" class="carousel-img" alt="Directorio Médico Digital imagen 2">
-        <img src="Carrusel Wayfinding 3.png" class="carousel-img" alt="Directorio Médico Digital imagen 3">
+        <div class="slide active">
+          <img src="Carrusel Wayfinding 1.png" class="slide-bg" alt="" aria-hidden="true">
+          <img src="Carrusel Wayfinding 1.png" class="slide-img" alt="Directorio Médico Digital imagen 1">
+        </div>
+        <div class="slide">
+          <img src="Carrusel Wayfinding 2.png" class="slide-bg" alt="" aria-hidden="true">
+          <img src="Carrusel Wayfinding 2.png" class="slide-img" alt="Directorio Médico Digital imagen 2">
+        </div>
+        <div class="slide">
+          <img src="Carrusel Wayfinding 3.png" class="slide-bg" alt="" aria-hidden="true">
+          <img src="Carrusel Wayfinding 3.png" class="slide-img" alt="Directorio Médico Digital imagen 3">
+        </div>
 
         <button class="carousel-arrow carousel-prev" aria-label="Anterior">
           <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
@@ -1880,51 +2032,257 @@
         <p class="section-sub">No es solo una pantalla con nombres. Es una plataforma de orientación, gestión y generación de ingresos, desplegada en su infraestructura existente.</p>
       </div>
 
-      <!-- VIDEO DEL SISTEMA -->
-      <div class="video-wrap reveal">
-        <div class="video-container">
-          <video
-            class="system-video"
-            controls
-            preload="metadata"
-            poster=""
-            playsinline>
-            <source src="Wayfinding.mp4" type="video/mp4">
-            Tu navegador no soporta video HTML5.
-          </video>
-        </div>
-      </div>
-
-      <div class="solution-features">
-        <div class="feature-item reveal">
-          <div class="feature-num">01</div>
-          <div class="feature-content">
-            <h3>Navegación QR instantánea — el mapa 3D en el bolsillo del paciente</h3>
-            <p>Al escanear el código QR con la cámara, el visitante recibe en segundos una ruta personalizada hasta el consultorio en su propio dispositivo móvil. Sin descargar ninguna aplicación. Sin fricciones.</p>
+      <!-- 4 PASOS VERTICALES -->
+      <div class="steps-list">
+        <div class="step-row reveal">
+          <div class="step-text">
+            <div class="step-number-wrap">
+              <span class="step-number">01</span>
+              <span class="step-line"></span>
+            </div>
+            <h3>Navegación QR instantánea</h3>
+            <p class="step-subtitle">El mapa 3D en el bolsillo del paciente</p>
+            <p class="step-desc">Al escanear el código QR con la cámara, el visitante recibe en segundos una ruta personalizada hasta el consultorio en su propio dispositivo móvil. Sin descargar ninguna aplicación. Sin fricciones.</p>
+          </div>
+          <div class="step-visual">
+            <svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <defs>
+                <linearGradient id="phoneGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#e6f9ff"/>
+                  <stop offset="100%" stop-color="#ffffff"/>
+                </linearGradient>
+                <linearGradient id="screenGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stop-color="#cceeff"/>
+                  <stop offset="100%" stop-color="#ffffff"/>
+                </linearGradient>
+              </defs>
+              <!-- Glow ambient -->
+              <circle cx="120" cy="120" r="100" fill="rgba(0,204,255,0.06)"/>
+              <!-- Phone body -->
+              <rect x="78" y="42" width="84" height="156" rx="14" fill="url(#phoneGrad)" stroke="#0a1428" stroke-width="2.5"/>
+              <!-- Screen -->
+              <rect x="84" y="54" width="72" height="132" rx="6" fill="url(#screenGrad)"/>
+              <!-- Map grid -->
+              <line x1="84" y1="80" x2="156" y2="80" stroke="#bfe9ff" stroke-width="1"/>
+              <line x1="84" y1="110" x2="156" y2="110" stroke="#bfe9ff" stroke-width="1"/>
+              <line x1="84" y1="140" x2="156" y2="140" stroke="#bfe9ff" stroke-width="1"/>
+              <line x1="84" y1="170" x2="156" y2="170" stroke="#bfe9ff" stroke-width="1"/>
+              <line x1="108" y1="54" x2="108" y2="186" stroke="#bfe9ff" stroke-width="1"/>
+              <line x1="132" y1="54" x2="132" y2="186" stroke="#bfe9ff" stroke-width="1"/>
+              <!-- Route path -->
+              <path d="M 94 175 Q 110 160, 115 140 T 130 100 T 145 70" fill="none" stroke="#00ccff" stroke-width="3" stroke-linecap="round" stroke-dasharray="4 3"/>
+              <!-- Pin start -->
+              <circle cx="94" cy="175" r="5" fill="#0a1428"/>
+              <!-- Pin destination -->
+              <path d="M 145 60 C 145 55, 149 51, 154 51 C 159 51, 163 55, 163 60 C 163 67, 154 76, 154 76 C 154 76, 145 67, 145 60 Z" fill="#00ccff" stroke="#0a1428" stroke-width="1.5"/>
+              <circle cx="154" cy="60" r="2.5" fill="#ffffff"/>
+              <!-- Notch -->
+              <rect x="108" y="48" width="24" height="4" rx="2" fill="#0a1428"/>
+              <!-- QR badge -->
+              <rect x="36" y="100" width="40" height="40" rx="6" fill="#ffffff" stroke="#00ccff" stroke-width="2"/>
+              <rect x="42" y="106" width="8" height="8" fill="#0a1428"/>
+              <rect x="62" y="106" width="8" height="8" fill="#0a1428"/>
+              <rect x="42" y="126" width="8" height="8" fill="#0a1428"/>
+              <rect x="54" y="118" width="4" height="4" fill="#0a1428"/>
+              <rect x="62" y="122" width="4" height="4" fill="#0a1428"/>
+              <rect x="58" y="130" width="4" height="4" fill="#0a1428"/>
+            </svg>
           </div>
         </div>
 
-        <div class="feature-item reveal">
-          <div class="feature-num">02</div>
-          <div class="feature-content">
-            <h3>Modelado 3D a medida — un gemelo digital de su edificio</h3>
-            <p>Construimos un modelo tridimensional exacto de su infraestructura: pasillos, ascensores, escaleras, plantas y consultorios. La navegación refleja la realidad de su espacio con precisión milimétrica.</p>
+        <div class="step-row reveal">
+          <div class="step-text">
+            <div class="step-number-wrap">
+              <span class="step-number">02</span>
+              <span class="step-line"></span>
+            </div>
+            <h3>Modelado 3D a medida</h3>
+            <p class="step-subtitle">Un gemelo digital de su edificio</p>
+            <p class="step-desc">Construimos un modelo tridimensional exacto de su infraestructura: pasillos, ascensores, escaleras, plantas y consultorios. La navegación refleja la realidad de su espacio con precisión milimétrica.</p>
+          </div>
+          <div class="step-visual">
+            <svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <defs>
+                <linearGradient id="bldGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stop-color="#ffffff"/>
+                  <stop offset="100%" stop-color="#cceeff"/>
+                </linearGradient>
+              </defs>
+              <!-- Glow ambient -->
+              <ellipse cx="120" cy="200" rx="85" ry="14" fill="rgba(0,204,255,0.18)"/>
+              <!-- Isometric building - 3 floors -->
+              <!-- Floor 3 (top) -->
+              <g>
+                <polygon points="120,40 175,62 175,82 120,60" fill="url(#bldGrad)" stroke="#0a1428" stroke-width="2"/>
+                <polygon points="120,40 65,62 65,82 120,60" fill="#e6f9ff" stroke="#0a1428" stroke-width="2"/>
+                <polygon points="120,60 175,82 120,82 65,82" fill="#ffffff" stroke="#0a1428" stroke-width="2"/>
+              </g>
+              <!-- Floor 2 (middle) -->
+              <g>
+                <polygon points="120,82 175,104 175,124 120,102" fill="url(#bldGrad)" stroke="#0a1428" stroke-width="2"/>
+                <polygon points="120,82 65,104 65,124 120,102" fill="#e6f9ff" stroke="#0a1428" stroke-width="2"/>
+              </g>
+              <!-- Floor 1 (bottom) -->
+              <g>
+                <polygon points="120,124 175,146 175,166 120,144" fill="url(#bldGrad)" stroke="#0a1428" stroke-width="2"/>
+                <polygon points="120,124 65,146 65,166 120,144" fill="#e6f9ff" stroke="#0a1428" stroke-width="2"/>
+                <polygon points="120,144 175,166 120,166 65,166" fill="#ffffff" stroke="#0a1428" stroke-width="2"/>
+              </g>
+              <!-- Windows -->
+              <rect x="80" y="68" width="6" height="6" fill="#00ccff" transform="skewY(-22)"/>
+              <rect x="100" y="60" width="6" height="6" fill="#00ccff" transform="skewY(-22)"/>
+              <rect x="140" y="58" width="6" height="6" fill="#00ccff" transform="skewY(22)"/>
+              <rect x="160" y="66" width="6" height="6" fill="#00ccff" transform="skewY(22)"/>
+              <!-- Floor 2 windows -->
+              <rect x="80" y="100" width="6" height="6" fill="#00ccff" transform="skewY(-22)"/>
+              <rect x="100" y="93" width="6" height="6" fill="#00ccff" transform="skewY(-22)"/>
+              <rect x="140" y="92" width="6" height="6" fill="#00ccff" transform="skewY(22)"/>
+              <rect x="160" y="100" width="6" height="6" fill="#00ccff" transform="skewY(22)"/>
+              <!-- Floor 1 windows -->
+              <rect x="80" y="135" width="6" height="6" fill="#00ccff" transform="skewY(-22)"/>
+              <rect x="100" y="128" width="6" height="6" fill="#00ccff" transform="skewY(-22)"/>
+              <rect x="140" y="127" width="6" height="6" fill="#00ccff" transform="skewY(22)"/>
+              <rect x="160" y="135" width="6" height="6" fill="#00ccff" transform="skewY(22)"/>
+              <!-- Connection lines (digital wireframe effect) -->
+              <line x1="65" y1="82" x2="65" y2="124" stroke="#00ccff" stroke-width="1.5" stroke-dasharray="2 2" opacity="0.7"/>
+              <line x1="175" y1="82" x2="175" y2="124" stroke="#00ccff" stroke-width="1.5" stroke-dasharray="2 2" opacity="0.7"/>
+              <line x1="65" y1="124" x2="65" y2="166" stroke="#00ccff" stroke-width="1.5" stroke-dasharray="2 2" opacity="0.7"/>
+              <line x1="175" y1="124" x2="175" y2="166" stroke="#00ccff" stroke-width="1.5" stroke-dasharray="2 2" opacity="0.7"/>
+            </svg>
           </div>
         </div>
 
-        <div class="feature-item reveal">
-          <div class="feature-num">03</div>
-          <div class="feature-content">
-            <h3>Actualización centralizada — cambios en segundos, no en días</h3>
-            <p>¿Un médico cambió de consultorio? ¿Nueva especialidad en el piso 4? Desde el panel administrativo actualice cualquier información en tiempo real. Todos los directorios y apps de pacientes se sincronizan al instante.</p>
+        <div class="step-row reveal">
+          <div class="step-text">
+            <div class="step-number-wrap">
+              <span class="step-number">03</span>
+              <span class="step-line"></span>
+            </div>
+            <h3>Actualización centralizada</h3>
+            <p class="step-subtitle">Cambios en segundos, no en días</p>
+            <p class="step-desc">¿Un médico cambió de consultorio? ¿Nueva especialidad en el piso 4? Desde el panel administrativo actualice cualquier información en tiempo real. Todos los directorios y apps de pacientes se sincronizan al instante.</p>
+          </div>
+          <div class="step-visual">
+            <svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <defs>
+                <linearGradient id="monGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stop-color="#ffffff"/>
+                  <stop offset="100%" stop-color="#cceeff"/>
+                </linearGradient>
+              </defs>
+              <!-- Glow -->
+              <circle cx="120" cy="110" r="95" fill="rgba(0,204,255,0.06)"/>
+              <!-- Monitor -->
+              <rect x="45" y="50" width="150" height="100" rx="6" fill="url(#monGrad)" stroke="#0a1428" stroke-width="2.5"/>
+              <rect x="51" y="56" width="138" height="80" rx="3" fill="#ffffff"/>
+              <!-- Stand -->
+              <path d="M 100 150 L 95 175 L 145 175 L 140 150 Z" fill="#e6f9ff" stroke="#0a1428" stroke-width="2"/>
+              <rect x="80" y="175" width="80" height="6" rx="2" fill="#0a1428"/>
+              <!-- Dashboard content -->
+              <!-- Sidebar -->
+              <rect x="56" y="61" width="28" height="70" rx="2" fill="#e6f9ff"/>
+              <circle cx="62" cy="70" r="3" fill="#00ccff"/>
+              <rect x="68" y="68" width="14" height="4" rx="1" fill="#00ccff"/>
+              <circle cx="62" cy="84" r="3" fill="#bfe9ff"/>
+              <rect x="68" y="82" width="14" height="4" rx="1" fill="#bfe9ff"/>
+              <circle cx="62" cy="98" r="3" fill="#bfe9ff"/>
+              <rect x="68" y="96" width="14" height="4" rx="1" fill="#bfe9ff"/>
+              <circle cx="62" cy="112" r="3" fill="#bfe9ff"/>
+              <rect x="68" y="110" width="14" height="4" rx="1" fill="#bfe9ff"/>
+              <!-- Main area -->
+              <rect x="90" y="65" width="60" height="6" rx="1" fill="#0a1428"/>
+              <rect x="90" y="77" width="40" height="3" rx="1" fill="#bfe9ff"/>
+              <!-- Stats cards -->
+              <rect x="90" y="86" width="28" height="20" rx="2" fill="#e6f9ff"/>
+              <rect x="93" y="89" width="14" height="3" fill="#00ccff"/>
+              <rect x="93" y="96" width="20" height="7" rx="1" fill="#0a1428"/>
+              <rect x="122" y="86" width="28" height="20" rx="2" fill="#e6f9ff"/>
+              <rect x="125" y="89" width="14" height="3" fill="#00ccff"/>
+              <rect x="125" y="96" width="20" height="7" rx="1" fill="#0a1428"/>
+              <!-- Chart line -->
+              <polyline points="90,128 100,118 110,122 120,112 130,116 140,108 150,110" fill="none" stroke="#00ccff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="90" cy="128" r="2" fill="#00ccff"/>
+              <circle cx="110" cy="122" r="2" fill="#00ccff"/>
+              <circle cx="130" cy="116" r="2" fill="#00ccff"/>
+              <circle cx="150" cy="110" r="2" fill="#00ccff"/>
+              <!-- Right panel -->
+              <rect x="156" y="65" width="28" height="8" rx="1" fill="#00ccff"/>
+              <rect x="156" y="78" width="28" height="3" rx="1" fill="#bfe9ff"/>
+              <rect x="156" y="85" width="22" height="3" rx="1" fill="#bfe9ff"/>
+              <rect x="156" y="95" width="28" height="35" rx="2" fill="#e6f9ff"/>
+              <!-- Sync icon top right -->
+              <circle cx="200" cy="40" r="14" fill="#00ccff"/>
+              <path d="M 195 36 L 200 32 L 205 36 M 200 32 L 200 42 L 207 42" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M 205 48 L 200 52 L 195 48 M 200 52 L 200 42" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
           </div>
         </div>
 
-        <div class="feature-item reveal">
-          <div class="feature-num">04</div>
-          <div class="feature-content">
+        <div class="step-row reveal">
+          <div class="step-text">
+            <div class="step-number-wrap">
+              <span class="step-number">04</span>
+              <span class="step-line"></span>
+            </div>
             <h3>Multi-pantalla integrado</h3>
-            <p>Desde pantallas verticales en recepción hasta totems táctiles en los accesos y la versión móvil escaneada desde cualquier punto. Un solo contenido, múltiples puntos de contacto con el paciente.</p>
+            <p class="step-subtitle">Un solo contenido, múltiples puntos de contacto</p>
+            <p class="step-desc">Desde pantallas verticales en recepción hasta totems táctiles en los accesos y la versión móvil escaneada desde cualquier punto. Toda su instalación, sincronizada al instante.</p>
+          </div>
+          <div class="step-visual">
+            <svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <defs>
+                <linearGradient id="totemGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stop-color="#ffffff"/>
+                  <stop offset="100%" stop-color="#e6f9ff"/>
+                </linearGradient>
+                <linearGradient id="screenGrad4" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stop-color="#cceeff"/>
+                  <stop offset="100%" stop-color="#ffffff"/>
+                </linearGradient>
+              </defs>
+              <!-- Glow -->
+              <ellipse cx="120" cy="210" rx="90" ry="10" fill="rgba(0,204,255,0.18)"/>
+
+              <!-- Kiosko vertical (centro) -->
+              <rect x="100" y="40" width="56" height="160" rx="6" fill="url(#totemGrad)" stroke="#0a1428" stroke-width="2.5"/>
+              <rect x="106" y="46" width="44" height="120" rx="3" fill="url(#screenGrad4)"/>
+              <!-- Base totem -->
+              <rect x="92" y="200" width="72" height="6" rx="2" fill="#0a1428"/>
+              <!-- Content kiosko: directorio simulado -->
+              <rect x="111" y="52" width="34" height="4" rx="1" fill="#00ccff"/>
+              <rect x="111" y="62" width="20" height="2" rx="1" fill="#bfe9ff"/>
+              <line x1="111" y1="70" x2="145" y2="70" stroke="#bfe9ff" stroke-width="0.5"/>
+              <rect x="111" y="75" width="34" height="6" rx="1" fill="#e6f9ff"/>
+              <rect x="111" y="83" width="34" height="6" rx="1" fill="#e6f9ff"/>
+              <rect x="111" y="91" width="34" height="6" rx="1" fill="#cceeff"/>
+              <rect x="111" y="99" width="34" height="6" rx="1" fill="#e6f9ff"/>
+              <!-- Pin -->
+              <circle cx="128" cy="130" r="6" fill="#00ccff"/>
+              <circle cx="128" cy="130" r="2" fill="#ffffff"/>
+
+              <!-- Tablet horizontal (izquierda) -->
+              <rect x="22" y="100" width="60" height="44" rx="4" fill="#ffffff" stroke="#0a1428" stroke-width="2"/>
+              <rect x="26" y="104" width="52" height="36" rx="2" fill="#e6f9ff"/>
+              <rect x="30" y="108" width="20" height="3" rx="1" fill="#00ccff"/>
+              <rect x="30" y="114" width="14" height="2" rx="1" fill="#bfe9ff"/>
+              <polyline points="30,128 38,122 46,125 54,118 62,121 70,116" fill="none" stroke="#00ccff" stroke-width="1.5" stroke-linecap="round"/>
+
+              <!-- Smartphone (derecha) -->
+              <rect x="174" y="115" width="40" height="70" rx="6" fill="#ffffff" stroke="#0a1428" stroke-width="2"/>
+              <rect x="178" y="121" width="32" height="58" rx="3" fill="url(#screenGrad4)"/>
+              <rect x="190" y="119" width="8" height="2" rx="1" fill="#0a1428"/>
+              <!-- Mini map en phone -->
+              <line x1="178" y1="135" x2="210" y2="135" stroke="#bfe9ff" stroke-width="0.5"/>
+              <line x1="178" y1="148" x2="210" y2="148" stroke="#bfe9ff" stroke-width="0.5"/>
+              <line x1="178" y1="161" x2="210" y2="161" stroke="#bfe9ff" stroke-width="0.5"/>
+              <path d="M 184 170 Q 190 158, 196 150 T 204 132" fill="none" stroke="#00ccff" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="2 2"/>
+              <circle cx="184" cy="170" r="2" fill="#0a1428"/>
+              <circle cx="204" cy="132" r="2.5" fill="#00ccff"/>
+
+              <!-- Connection lines (sync) -->
+              <path d="M 82 122 Q 92 122, 100 110" fill="none" stroke="#00ccff" stroke-width="1.5" stroke-dasharray="3 3" opacity="0.6"/>
+              <path d="M 156 110 Q 165 120, 174 130" fill="none" stroke="#00ccff" stroke-width="1.5" stroke-dasharray="3 3" opacity="0.6"/>
+            </svg>
           </div>
         </div>
       </div>
@@ -1970,10 +2328,10 @@
   <section class="showcase">
     <div class="showcase-inner">
       <div class="showcase-media reveal">
-        <img src="Carrusel Wayfinding 2.png" alt="Directorio Médico Digital implementado en edificio médico" loading="lazy">
+        <img src="Busqueda Facil.png" alt="Haz que tu búsqueda sea fácil y rápida para los pacientes" loading="lazy">
         <div class="showcase-badge">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-          <span>Implementación real</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <span>Búsqueda fácil</span>
         </div>
       </div>
 
@@ -2201,7 +2559,7 @@
       const carousel = document.getElementById('heroCarousel');
       if (!carousel) return;
 
-      const slides = carousel.querySelectorAll('.carousel-img');
+      const slides = carousel.querySelectorAll('.slide');
       const dots = carousel.querySelectorAll('.carousel-dot');
       const prevBtn = carousel.querySelector('.carousel-prev');
       const nextBtn = carousel.querySelector('.carousel-next');
