@@ -4,9 +4,29 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Directorio Médico Digital · Info Display Solutions</title>
-  <link href="https://fonts.googleapis.com/css2?family=Exo:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,400;1,700&display=swap" rel="stylesheet">
   <link rel="icon" href="icon.jpeg" type="image/png">
   <style>
+    /* ─── TIPOGRAFÍAS ─────────────────────────────── */
+    @font-face {
+      font-family: 'Ragonte';
+      src: url('fonts/Ragonte-Regular.woff2') format('woff2'),
+           url('fonts/Ragonte-Regular.woff') format('woff');
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Ragonte';
+      src: url('fonts/Ragonte-Italic.woff2') format('woff2'),
+           url('fonts/Ragonte-Italic.woff') format('woff');
+      font-weight: 400;
+      font-style: italic;
+      font-display: swap;
+    }
+
     :root {
       /* Paleta del cliente: cyan + lightgray + white */
       --primary: #00ccff;
@@ -42,7 +62,7 @@
     }
 
     body {
-      font-family: 'Exo', sans-serif;
+      font-family: 'Lato', 'Helvetica Neue', Arial, sans-serif;
       background-color: var(--bg);
       color: var(--text-primary);
       overflow-x: hidden;
@@ -242,6 +262,7 @@
     }
 
     .hero h1 {
+      font-family: 'Ragonte', 'Lato', serif;
       font-size: clamp(40px, 6.5vw, 78px);
       font-weight: 900;
       line-height: 1.05;
@@ -525,6 +546,7 @@
     }
 
     .stat-number {
+      font-family: 'Ragonte', 'Lato', serif;
       font-size: clamp(44px, 5vw, 64px);
       font-weight: 900;
       background: linear-gradient(135deg, #66d9ff, #00ccff);
@@ -558,6 +580,7 @@
     }
 
     .section-title {
+      font-family: 'Ragonte', 'Lato', serif;
       font-size: clamp(32px, 5vw, 52px);
       font-weight: 900;
       line-height: 1.1;
@@ -759,6 +782,7 @@
     }
 
     .step-number {
+      font-family: 'Ragonte', 'Lato', serif;
       font-size: clamp(36px, 4vw, 52px);
       font-weight: 900;
       letter-spacing: -2px;
@@ -778,6 +802,7 @@
     }
 
     .step-text h3 {
+      font-family: 'Ragonte', 'Lato', serif;
       font-size: clamp(22px, 2.4vw, 28px);
       font-weight: 800;
       line-height: 1.2;
@@ -810,23 +835,32 @@
     .step-visual::before {
       content: '';
       position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at center, rgba(0,204,255,0.08) 0%, transparent 70%);
+      inset: -10px;
+      background: radial-gradient(circle at center, rgba(0,204,255,0.18) 0%, transparent 65%);
       pointer-events: none;
+      filter: blur(20px);
     }
 
-    .step-visual svg {
+    .step-visual img {
       width: 100%;
-      max-width: 320px;
+      max-width: 420px;
       height: auto;
+      display: block;
       position: relative;
       z-index: 1;
-      filter: drop-shadow(0 12px 24px rgba(0,153,204,0.15));
-      transition: transform 0.4s ease;
+      border-radius: 16px;
+      box-shadow:
+        0 16px 40px rgba(0, 153, 204, 0.18),
+        0 4px 12px rgba(0, 0, 0, 0.06);
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+      border: 1px solid rgba(0, 204, 255, 0.15);
     }
 
-    .step-row:hover .step-visual svg {
-      transform: translateY(-4px);
+    .step-row:hover .step-visual img {
+      transform: translateY(-6px);
+      box-shadow:
+        0 24px 50px rgba(0, 153, 204, 0.25),
+        0 6px 16px rgba(0, 0, 0, 0.08);
     }
 
     /* Solution features (legacy, no se renderiza pero queda por compatibilidad) */
@@ -1197,6 +1231,7 @@
     }
 
     .uptime-num {
+      font-family: 'Ragonte', 'Lato', serif;
       font-size: 48px;
       font-weight: 900;
       background: linear-gradient(135deg, #00ccff, #0077aa);
@@ -1422,6 +1457,7 @@
     }
 
     .contact-info h2 {
+      font-family: 'Ragonte', 'Lato', serif;
       font-size: clamp(32px, 4vw, 46px);
       font-weight: 900;
       line-height: 1.1;
@@ -1528,6 +1564,7 @@
     }
 
     .footer-logo {
+      font-family: 'Ragonte', 'Lato', serif;
       font-size: 20px;
       font-weight: 900;
       letter-spacing: 2px;
@@ -1742,8 +1779,8 @@
         justify-content: center;
       }
 
-      .step-visual svg {
-        max-width: 240px;
+      .step-visual img {
+        max-width: 320px;
       }
     }
 
@@ -1942,16 +1979,16 @@
     <div class="hero-carousel-wrap">
       <div class="hero-carousel" id="heroCarousel">
         <div class="slide active">
-          <img src="Carrusel Wayfinding 1.png" class="slide-bg" alt="" aria-hidden="true">
-          <img src="Carrusel Wayfinding 1.png" class="slide-img" alt="Directorio Médico Digital imagen 1">
+          <img src="Carrusel1.png" class="slide-bg" alt="" aria-hidden="true">
+          <img src="Carrusel1.png" class="slide-img" alt="Directorio Médico Digital imagen 1">
         </div>
         <div class="slide">
-          <img src="Carrusel Wayfinding 2.png" class="slide-bg" alt="" aria-hidden="true">
-          <img src="Carrusel Wayfinding 2.png" class="slide-img" alt="Directorio Médico Digital imagen 2">
+          <img src="Carrusel2.png" class="slide-bg" alt="" aria-hidden="true">
+          <img src="Carrusel2.png" class="slide-img" alt="Directorio Médico Digital imagen 2">
         </div>
         <div class="slide">
-          <img src="Carrusel Wayfinding 3.png" class="slide-bg" alt="" aria-hidden="true">
-          <img src="Carrusel Wayfinding 3.png" class="slide-img" alt="Directorio Médico Digital imagen 3">
+          <img src="Carrusel3.png" class="slide-bg" alt="" aria-hidden="true">
+          <img src="Carrusel3.png" class="slide-img" alt="Directorio Médico Digital imagen 3">
         </div>
 
         <button class="carousel-arrow carousel-prev" aria-label="Anterior">
@@ -2045,48 +2082,7 @@
             <p class="step-desc">Al escanear el código QR con la cámara, el visitante recibe en segundos una ruta personalizada hasta el consultorio en su propio dispositivo móvil. Sin descargar ninguna aplicación. Sin fricciones.</p>
           </div>
           <div class="step-visual">
-            <svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <defs>
-                <linearGradient id="phoneGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stop-color="#e6f9ff"/>
-                  <stop offset="100%" stop-color="#ffffff"/>
-                </linearGradient>
-                <linearGradient id="screenGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                  <stop offset="0%" stop-color="#cceeff"/>
-                  <stop offset="100%" stop-color="#ffffff"/>
-                </linearGradient>
-              </defs>
-              <!-- Glow ambient -->
-              <circle cx="120" cy="120" r="100" fill="rgba(0,204,255,0.06)"/>
-              <!-- Phone body -->
-              <rect x="78" y="42" width="84" height="156" rx="14" fill="url(#phoneGrad)" stroke="#0a1428" stroke-width="2.5"/>
-              <!-- Screen -->
-              <rect x="84" y="54" width="72" height="132" rx="6" fill="url(#screenGrad)"/>
-              <!-- Map grid -->
-              <line x1="84" y1="80" x2="156" y2="80" stroke="#bfe9ff" stroke-width="1"/>
-              <line x1="84" y1="110" x2="156" y2="110" stroke="#bfe9ff" stroke-width="1"/>
-              <line x1="84" y1="140" x2="156" y2="140" stroke="#bfe9ff" stroke-width="1"/>
-              <line x1="84" y1="170" x2="156" y2="170" stroke="#bfe9ff" stroke-width="1"/>
-              <line x1="108" y1="54" x2="108" y2="186" stroke="#bfe9ff" stroke-width="1"/>
-              <line x1="132" y1="54" x2="132" y2="186" stroke="#bfe9ff" stroke-width="1"/>
-              <!-- Route path -->
-              <path d="M 94 175 Q 110 160, 115 140 T 130 100 T 145 70" fill="none" stroke="#00ccff" stroke-width="3" stroke-linecap="round" stroke-dasharray="4 3"/>
-              <!-- Pin start -->
-              <circle cx="94" cy="175" r="5" fill="#0a1428"/>
-              <!-- Pin destination -->
-              <path d="M 145 60 C 145 55, 149 51, 154 51 C 159 51, 163 55, 163 60 C 163 67, 154 76, 154 76 C 154 76, 145 67, 145 60 Z" fill="#00ccff" stroke="#0a1428" stroke-width="1.5"/>
-              <circle cx="154" cy="60" r="2.5" fill="#ffffff"/>
-              <!-- Notch -->
-              <rect x="108" y="48" width="24" height="4" rx="2" fill="#0a1428"/>
-              <!-- QR badge -->
-              <rect x="36" y="100" width="40" height="40" rx="6" fill="#ffffff" stroke="#00ccff" stroke-width="2"/>
-              <rect x="42" y="106" width="8" height="8" fill="#0a1428"/>
-              <rect x="62" y="106" width="8" height="8" fill="#0a1428"/>
-              <rect x="42" y="126" width="8" height="8" fill="#0a1428"/>
-              <rect x="54" y="118" width="4" height="4" fill="#0a1428"/>
-              <rect x="62" y="122" width="4" height="4" fill="#0a1428"/>
-              <rect x="58" y="130" width="4" height="4" fill="#0a1428"/>
-            </svg>
+            <img src="07.png" alt="Smartphone con código QR escaneando el directorio médico" loading="lazy">
           </div>
         </div>
 
@@ -2101,54 +2097,7 @@
             <p class="step-desc">Construimos un modelo tridimensional exacto de su infraestructura: pasillos, ascensores, escaleras, plantas y consultorios. La navegación refleja la realidad de su espacio con precisión milimétrica.</p>
           </div>
           <div class="step-visual">
-            <svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <defs>
-                <linearGradient id="bldGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                  <stop offset="0%" stop-color="#ffffff"/>
-                  <stop offset="100%" stop-color="#cceeff"/>
-                </linearGradient>
-              </defs>
-              <!-- Glow ambient -->
-              <ellipse cx="120" cy="200" rx="85" ry="14" fill="rgba(0,204,255,0.18)"/>
-              <!-- Isometric building - 3 floors -->
-              <!-- Floor 3 (top) -->
-              <g>
-                <polygon points="120,40 175,62 175,82 120,60" fill="url(#bldGrad)" stroke="#0a1428" stroke-width="2"/>
-                <polygon points="120,40 65,62 65,82 120,60" fill="#e6f9ff" stroke="#0a1428" stroke-width="2"/>
-                <polygon points="120,60 175,82 120,82 65,82" fill="#ffffff" stroke="#0a1428" stroke-width="2"/>
-              </g>
-              <!-- Floor 2 (middle) -->
-              <g>
-                <polygon points="120,82 175,104 175,124 120,102" fill="url(#bldGrad)" stroke="#0a1428" stroke-width="2"/>
-                <polygon points="120,82 65,104 65,124 120,102" fill="#e6f9ff" stroke="#0a1428" stroke-width="2"/>
-              </g>
-              <!-- Floor 1 (bottom) -->
-              <g>
-                <polygon points="120,124 175,146 175,166 120,144" fill="url(#bldGrad)" stroke="#0a1428" stroke-width="2"/>
-                <polygon points="120,124 65,146 65,166 120,144" fill="#e6f9ff" stroke="#0a1428" stroke-width="2"/>
-                <polygon points="120,144 175,166 120,166 65,166" fill="#ffffff" stroke="#0a1428" stroke-width="2"/>
-              </g>
-              <!-- Windows -->
-              <rect x="80" y="68" width="6" height="6" fill="#00ccff" transform="skewY(-22)"/>
-              <rect x="100" y="60" width="6" height="6" fill="#00ccff" transform="skewY(-22)"/>
-              <rect x="140" y="58" width="6" height="6" fill="#00ccff" transform="skewY(22)"/>
-              <rect x="160" y="66" width="6" height="6" fill="#00ccff" transform="skewY(22)"/>
-              <!-- Floor 2 windows -->
-              <rect x="80" y="100" width="6" height="6" fill="#00ccff" transform="skewY(-22)"/>
-              <rect x="100" y="93" width="6" height="6" fill="#00ccff" transform="skewY(-22)"/>
-              <rect x="140" y="92" width="6" height="6" fill="#00ccff" transform="skewY(22)"/>
-              <rect x="160" y="100" width="6" height="6" fill="#00ccff" transform="skewY(22)"/>
-              <!-- Floor 1 windows -->
-              <rect x="80" y="135" width="6" height="6" fill="#00ccff" transform="skewY(-22)"/>
-              <rect x="100" y="128" width="6" height="6" fill="#00ccff" transform="skewY(-22)"/>
-              <rect x="140" y="127" width="6" height="6" fill="#00ccff" transform="skewY(22)"/>
-              <rect x="160" y="135" width="6" height="6" fill="#00ccff" transform="skewY(22)"/>
-              <!-- Connection lines (digital wireframe effect) -->
-              <line x1="65" y1="82" x2="65" y2="124" stroke="#00ccff" stroke-width="1.5" stroke-dasharray="2 2" opacity="0.7"/>
-              <line x1="175" y1="82" x2="175" y2="124" stroke="#00ccff" stroke-width="1.5" stroke-dasharray="2 2" opacity="0.7"/>
-              <line x1="65" y1="124" x2="65" y2="166" stroke="#00ccff" stroke-width="1.5" stroke-dasharray="2 2" opacity="0.7"/>
-              <line x1="175" y1="124" x2="175" y2="166" stroke="#00ccff" stroke-width="1.5" stroke-dasharray="2 2" opacity="0.7"/>
-            </svg>
+            <img src="06.png" alt="Modelo 3D iluminado de edificio médico con plantas y consultorios" loading="lazy">
           </div>
         </div>
 
@@ -2163,58 +2112,7 @@
             <p class="step-desc">¿Un médico cambió de consultorio? ¿Nueva especialidad en el piso 4? Desde el panel administrativo actualice cualquier información en tiempo real. Todos los directorios y apps de pacientes se sincronizan al instante.</p>
           </div>
           <div class="step-visual">
-            <svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <defs>
-                <linearGradient id="monGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                  <stop offset="0%" stop-color="#ffffff"/>
-                  <stop offset="100%" stop-color="#cceeff"/>
-                </linearGradient>
-              </defs>
-              <!-- Glow -->
-              <circle cx="120" cy="110" r="95" fill="rgba(0,204,255,0.06)"/>
-              <!-- Monitor -->
-              <rect x="45" y="50" width="150" height="100" rx="6" fill="url(#monGrad)" stroke="#0a1428" stroke-width="2.5"/>
-              <rect x="51" y="56" width="138" height="80" rx="3" fill="#ffffff"/>
-              <!-- Stand -->
-              <path d="M 100 150 L 95 175 L 145 175 L 140 150 Z" fill="#e6f9ff" stroke="#0a1428" stroke-width="2"/>
-              <rect x="80" y="175" width="80" height="6" rx="2" fill="#0a1428"/>
-              <!-- Dashboard content -->
-              <!-- Sidebar -->
-              <rect x="56" y="61" width="28" height="70" rx="2" fill="#e6f9ff"/>
-              <circle cx="62" cy="70" r="3" fill="#00ccff"/>
-              <rect x="68" y="68" width="14" height="4" rx="1" fill="#00ccff"/>
-              <circle cx="62" cy="84" r="3" fill="#bfe9ff"/>
-              <rect x="68" y="82" width="14" height="4" rx="1" fill="#bfe9ff"/>
-              <circle cx="62" cy="98" r="3" fill="#bfe9ff"/>
-              <rect x="68" y="96" width="14" height="4" rx="1" fill="#bfe9ff"/>
-              <circle cx="62" cy="112" r="3" fill="#bfe9ff"/>
-              <rect x="68" y="110" width="14" height="4" rx="1" fill="#bfe9ff"/>
-              <!-- Main area -->
-              <rect x="90" y="65" width="60" height="6" rx="1" fill="#0a1428"/>
-              <rect x="90" y="77" width="40" height="3" rx="1" fill="#bfe9ff"/>
-              <!-- Stats cards -->
-              <rect x="90" y="86" width="28" height="20" rx="2" fill="#e6f9ff"/>
-              <rect x="93" y="89" width="14" height="3" fill="#00ccff"/>
-              <rect x="93" y="96" width="20" height="7" rx="1" fill="#0a1428"/>
-              <rect x="122" y="86" width="28" height="20" rx="2" fill="#e6f9ff"/>
-              <rect x="125" y="89" width="14" height="3" fill="#00ccff"/>
-              <rect x="125" y="96" width="20" height="7" rx="1" fill="#0a1428"/>
-              <!-- Chart line -->
-              <polyline points="90,128 100,118 110,122 120,112 130,116 140,108 150,110" fill="none" stroke="#00ccff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              <circle cx="90" cy="128" r="2" fill="#00ccff"/>
-              <circle cx="110" cy="122" r="2" fill="#00ccff"/>
-              <circle cx="130" cy="116" r="2" fill="#00ccff"/>
-              <circle cx="150" cy="110" r="2" fill="#00ccff"/>
-              <!-- Right panel -->
-              <rect x="156" y="65" width="28" height="8" rx="1" fill="#00ccff"/>
-              <rect x="156" y="78" width="28" height="3" rx="1" fill="#bfe9ff"/>
-              <rect x="156" y="85" width="22" height="3" rx="1" fill="#bfe9ff"/>
-              <rect x="156" y="95" width="28" height="35" rx="2" fill="#e6f9ff"/>
-              <!-- Sync icon top right -->
-              <circle cx="200" cy="40" r="14" fill="#00ccff"/>
-              <path d="M 195 36 L 200 32 L 205 36 M 200 32 L 200 42 L 207 42" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M 205 48 L 200 52 L 195 48 M 200 52 L 200 42" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
+            <img src="04.png" alt="Monitor con panel administrativo del Directorio Médico Digital" loading="lazy">
           </div>
         </div>
 
@@ -2229,60 +2127,7 @@
             <p class="step-desc">Desde pantallas verticales en recepción hasta totems táctiles en los accesos y la versión móvil escaneada desde cualquier punto. Toda su instalación, sincronizada al instante.</p>
           </div>
           <div class="step-visual">
-            <svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <defs>
-                <linearGradient id="totemGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                  <stop offset="0%" stop-color="#ffffff"/>
-                  <stop offset="100%" stop-color="#e6f9ff"/>
-                </linearGradient>
-                <linearGradient id="screenGrad4" x1="0%" y1="0%" x2="0%" y2="100%">
-                  <stop offset="0%" stop-color="#cceeff"/>
-                  <stop offset="100%" stop-color="#ffffff"/>
-                </linearGradient>
-              </defs>
-              <!-- Glow -->
-              <ellipse cx="120" cy="210" rx="90" ry="10" fill="rgba(0,204,255,0.18)"/>
-
-              <!-- Kiosko vertical (centro) -->
-              <rect x="100" y="40" width="56" height="160" rx="6" fill="url(#totemGrad)" stroke="#0a1428" stroke-width="2.5"/>
-              <rect x="106" y="46" width="44" height="120" rx="3" fill="url(#screenGrad4)"/>
-              <!-- Base totem -->
-              <rect x="92" y="200" width="72" height="6" rx="2" fill="#0a1428"/>
-              <!-- Content kiosko: directorio simulado -->
-              <rect x="111" y="52" width="34" height="4" rx="1" fill="#00ccff"/>
-              <rect x="111" y="62" width="20" height="2" rx="1" fill="#bfe9ff"/>
-              <line x1="111" y1="70" x2="145" y2="70" stroke="#bfe9ff" stroke-width="0.5"/>
-              <rect x="111" y="75" width="34" height="6" rx="1" fill="#e6f9ff"/>
-              <rect x="111" y="83" width="34" height="6" rx="1" fill="#e6f9ff"/>
-              <rect x="111" y="91" width="34" height="6" rx="1" fill="#cceeff"/>
-              <rect x="111" y="99" width="34" height="6" rx="1" fill="#e6f9ff"/>
-              <!-- Pin -->
-              <circle cx="128" cy="130" r="6" fill="#00ccff"/>
-              <circle cx="128" cy="130" r="2" fill="#ffffff"/>
-
-              <!-- Tablet horizontal (izquierda) -->
-              <rect x="22" y="100" width="60" height="44" rx="4" fill="#ffffff" stroke="#0a1428" stroke-width="2"/>
-              <rect x="26" y="104" width="52" height="36" rx="2" fill="#e6f9ff"/>
-              <rect x="30" y="108" width="20" height="3" rx="1" fill="#00ccff"/>
-              <rect x="30" y="114" width="14" height="2" rx="1" fill="#bfe9ff"/>
-              <polyline points="30,128 38,122 46,125 54,118 62,121 70,116" fill="none" stroke="#00ccff" stroke-width="1.5" stroke-linecap="round"/>
-
-              <!-- Smartphone (derecha) -->
-              <rect x="174" y="115" width="40" height="70" rx="6" fill="#ffffff" stroke="#0a1428" stroke-width="2"/>
-              <rect x="178" y="121" width="32" height="58" rx="3" fill="url(#screenGrad4)"/>
-              <rect x="190" y="119" width="8" height="2" rx="1" fill="#0a1428"/>
-              <!-- Mini map en phone -->
-              <line x1="178" y1="135" x2="210" y2="135" stroke="#bfe9ff" stroke-width="0.5"/>
-              <line x1="178" y1="148" x2="210" y2="148" stroke="#bfe9ff" stroke-width="0.5"/>
-              <line x1="178" y1="161" x2="210" y2="161" stroke="#bfe9ff" stroke-width="0.5"/>
-              <path d="M 184 170 Q 190 158, 196 150 T 204 132" fill="none" stroke="#00ccff" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="2 2"/>
-              <circle cx="184" cy="170" r="2" fill="#0a1428"/>
-              <circle cx="204" cy="132" r="2.5" fill="#00ccff"/>
-
-              <!-- Connection lines (sync) -->
-              <path d="M 82 122 Q 92 122, 100 110" fill="none" stroke="#00ccff" stroke-width="1.5" stroke-dasharray="3 3" opacity="0.6"/>
-              <path d="M 156 110 Q 165 120, 174 130" fill="none" stroke="#00ccff" stroke-width="1.5" stroke-dasharray="3 3" opacity="0.6"/>
-            </svg>
+            <img src="05.png" alt="Sistema multi-pantalla integrado en instalación médica" loading="lazy">
           </div>
         </div>
       </div>
