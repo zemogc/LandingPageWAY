@@ -120,12 +120,13 @@
   tick();
   setInterval(tick, 30000);
 
-  // Anuncios de ejemplo en la franja del kiosco
+  // Franja publicitaria del kiosco: rota los tipos de anunciante
   var ads = [
-    ['Óptica · Planta baja', 'Examen visual el mismo día de su cita'],
-    ['Farmacia · Junto a recepción', 'Retire su receta sin hacer fila'],
-    ['Laboratorio clínico aliado', 'Resultados en su correo en 24 horas'],
-    ['Cafetería · Nivel 1', 'Café y desayuno mientras espera']
+    ['Su marca aquí', 'Laboratorios farmacéuticos'],
+    ['Su marca aquí', 'Farmacias internas'],
+    ['Su marca aquí', 'Clínicas de estética'],
+    ['Su marca aquí', 'Ópticas'],
+    ['Su marca aquí', 'Locales comerciales del edificio']
   ];
   var adBox = document.getElementById('kioskAd');
   var adIndex = 0;
@@ -216,39 +217,6 @@
 
     if (reduceMotion) carousel.classList.add('is-paused');
     start();
-  }
-
-  /* ─── Simulador de ingresos publicitarios ────── */
-  var calc = document.getElementById('adCalc');
-  if (calc) {
-    var fmt = new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 });
-    var q = function (v) { return 'Q ' + fmt.format(v); };
-    var $ = function (id) { return document.getElementById(id); };
-    var HOURS_PER_DAY = 10;
-    var SPOT_SECONDS = 10;
-    var DAYS_PER_MONTH = 26;
-
-    var update = function () {
-      var screens = +$('calcScreens').value;
-      var slots = +$('calcSlots').value;
-      var rate = +$('calcRate').value;
-      var fill = +$('calcFill').value / 100;
-      var visitors = +$('calcVisitors').value;
-
-      $('outScreens').textContent = screens;
-      $('outSlots').textContent = slots;
-      $('outRate').textContent = q(rate);
-      $('outFill').textContent = Math.round(fill * 100) + ' %';
-      $('outVisitors').textContent = fmt.format(visitors);
-
-      var monthly = screens * slots * rate * fill;
-      $('resMonthly').textContent = q(monthly);
-      $('resYearly').textContent = q(monthly * 12);
-      $('resAudience').textContent = fmt.format(visitors * DAYS_PER_MONTH);
-      $('resPlays').textContent = fmt.format(Math.floor((HOURS_PER_DAY * 3600) / (slots * SPOT_SECONDS)));
-    };
-    calc.addEventListener('input', update);
-    update();
   }
 
   /* ─── Aparición al hacer scroll ──────────────── */

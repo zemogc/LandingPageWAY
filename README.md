@@ -8,8 +8,8 @@ Landing page comercial de **Info Display Solutions**, empresa guatemalteca que i
 
 ## Qué incluye
 
-- **Kiosco interactivo en el hero.** Simula una pantalla del directorio: el visitante elige un destino y la ruta se dibuja sobre el plano, con tiempo estimado a pie, franja publicitaria rotativa y código QR.
-- **Sección de publicidad digital (DOOH).** Formatos publicitarios, perfiles de anunciantes y un simulador de ingresos en quetzales con valores ajustables (pantallas, anuncios por ciclo, tarifa, ocupación y visitantes diarios).
+- **Kiosco interactivo en el hero.** Demostración ilustrativa de una pantalla del directorio: el visitante elige un destino y la ruta se dibuja sobre el plano, con una franja de espacio publicitario y código QR.
+- **Sección de publicidad digital.** Propuesta de monetización, tipos de anunciante y solicitud del análisis de potencial publicitario.
 - **Contenido de producto.** Problema, solución en cuatro capacidades, fotos de tótems en sitio, modelo de negocio, proceso de implementación, soporte, privacidad y preguntas frecuentes.
 - **Contacto** mediante formulario de Google Forms embebido.
 
@@ -21,11 +21,11 @@ Sitio estático sin dependencias ni paso de compilación.
 | --- | --- |
 | Marcado | HTML5 semántico, datos estructurados `schema.org/Organization`, Open Graph |
 | Estilos | CSS propio con tokens en `:root`, Grid y Flexbox, responsive desde 360 px |
-| Interacción | JavaScript sin librerías (kiosco, carrusel, simulador, menú móvil) |
+| Interacción | JavaScript sin librerías (kiosco, carrusel, menú móvil) |
 | Tipografía | Ragonte (display, local), Lato (texto) y Overpass (rótulos) |
 | Imágenes | WebP optimizado, carga diferida |
 
-Accesibilidad: navegación por teclado con foco visible, enlace para saltar al contenido, textos alternativos, regiones `aria-live` en el kiosco y el simulador, y respeto de `prefers-reduced-motion`.
+Accesibilidad: navegación por teclado con foco visible, enlace para saltar al contenido, textos alternativos, regiones `aria-live` en el kiosco, y respeto de `prefers-reduced-motion`.
 
 ## Estructura
 
@@ -35,7 +35,7 @@ Accesibilidad: navegación por teclado con foco visible, enlace para saltar al c
 ├── 404.html              Página de error
 ├── assets/
 │   ├── css/styles.css    Estilos y tokens de diseño
-│   ├── js/main.js        Kiosco, carrusel, simulador y navegación
+│   ├── js/main.js        Kiosco, carrusel y navegación
 │   └── img/              Imágenes WebP, favicon e imagen Open Graph
 ├── fonts/                Ragonte (woff2/woff)
 ├── robots.txt
